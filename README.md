@@ -1,75 +1,36 @@
-# Nuxt Minimal Starter
+# Matina's Portfolio
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Hi there! 👋 I'm **Matina**, a frontend developer passionate about creating **smooth, user-friendly web experiences**.  
+This portfolio is a **personal project** to showcase my skills, document my growth, and support my journey toward **product management and UX-focused development**.
 
-## Setup
+## 🚀 About This Project
 
-Make sure to install dependencies:
+This portfolio is more than just a collection of projects — it’s a **space to experiment, learn, and improve**.  
+Built with **Vue.js, TypeScript, and modern web technologies**, it reflects my journey as a developer who values **both code quality and user experience**.
 
-```bash
-# npm
+### Goals
+
+- Showcase frontend development skills with a focus on **UI/UX**  
+- Build a **professional online presence**  
+- Experiment with **modern web animations and interactions**  
+- Document my growth as I move toward **product management**
+
+## 🛠️ Technologies
+
+- **Frontend:** Vue.js, TypeScript, Pinia, TailwindCSS / Vuetify  
+- **Animations:** GSAP, CSS transitions  
+- **Design & Planning:** Figma, Notion
+
+## 💻 Getting Started
+
+Follow these steps to run the project locally:
+
+1. **Clone the repo:**  
+2. **Install dependencies:**  
 npm install
+3.**Run the development server:**
+  	npm run dev
 
-# pnpm
-pnpm install
+    This keeps it **clean, minimal, and easy to follow**.  
 
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+If you want, I can integrate this into your **full README** so it’s ready to paste directly into GitHub.
