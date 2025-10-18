@@ -31,6 +31,4 @@ npm install
 3.**Run the development server:**
   	npm run dev
 
-    This keeps it **clean, minimal, and easy to follow**.  
 
-If you want, I can integrate this into your **full README** so it’s ready to paste directly into GitHub.
