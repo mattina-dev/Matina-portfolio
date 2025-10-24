@@ -17,8 +17,8 @@ Built with **Vue.js, TypeScript, and modern web technologies**, it reflects my j
 
 ## 🛠️ Technologies
 
-- **Frontend:** Vue.js, TypeScript, Pinia, TailwindCSS / Vuetify  
-- **Animations:** GSAP, CSS transitions  
+- **Frontend:** Vue.js, TypeScript, nuxt ,  Vuetify  
+- **Animations:** lenis, CSS transitions  
 - **Design & Planning:** Figma, Notion
 
 ## 💻 Getting Started
