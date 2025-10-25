@@ -38,6 +38,17 @@
                         </v-col>
                     </v-row>
                 </div>
+                <!--Education-->
+                <div>
+                    <h4 class="mb-4">
+                        Education:
+                    </h4>
+                    <p class="d-flex flex-column">
+                        <b >Computer engineering </b>
+                        azad university of karaj
+
+                    </p>
+                </div>
             </v-col>
         </v-row>
     </v-container>
