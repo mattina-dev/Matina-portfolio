@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, nextTick } from 'vue'
+import { onMounted, ref, nextTick, onUnmounted } from 'vue'
 import Lenis from '@studio-freight/lenis'
 
 import Header from '../components/Header.vue'
@@ -21,9 +21,10 @@ const appRef = ref(null)
 
 onMounted(async () => {
   await nextTick()
-  const sections = Array.from(document.querySelectorAll('.section'))
+
+  const sections = document.querySelectorAll('.section')
   let currentIndex = 0
-  let isLocked = false
+  let isScrolling = false
 
   const lenis = new Lenis({
     duration: 1,
@@ -31,42 +32,32 @@ onMounted(async () => {
     smooth: true,
   })
 
-  const scrollToSection = (index) => {
+  const scrollToIndex = (index) => {
     if (index < 0) index = 0
     if (index >= sections.length) index = sections.length - 1
     currentIndex = index
-    isLocked = true
-    lenis.scrollTo(sections[index], { offset: 0, duration: 1 })
-    setTimeout(() => {
-      isLocked = false
-    }, 1100)
+    const targetY = window.innerHeight * index
+    isScrolling = true
+    lenis.scrollTo(targetY, { duration: 1 })
+    setTimeout(() => (isScrolling = false), 1100)
   }
-
-  // فقط یک اسکرول در هر بار
-  let lastScrollTime = 0
-  const minDelay = 1000 // فاصله مجاز بین دو اسکرول
 
   const handleWheel = (e) => {
     e.preventDefault()
-    const now = Date.now()
-    if (isLocked || now - lastScrollTime < minDelay) return
-    lastScrollTime = now
+    if (isScrolling) return
 
-    if (e.deltaY > 30) scrollToSection(currentIndex + 1)
-    else if (e.deltaY < -30) scrollToSection(currentIndex - 1)
+    if (e.deltaY > 50) scrollToIndex(currentIndex + 1)
+    else if (e.deltaY < -50) scrollToIndex(currentIndex - 1)
   }
 
-  // لمس موبایل
+  // برای لمس موبایل
   let touchStartY = 0
   const handleTouchStart = (e) => (touchStartY = e.touches[0].clientY)
   const handleTouchEnd = (e) => {
+    if (isScrolling) return
     const diff = touchStartY - e.changedTouches[0].clientY
-    const now = Date.now()
-    if (isLocked || now - lastScrollTime < minDelay) return
-    lastScrollTime = now
-
-    if (diff > 50) scrollToSection(currentIndex + 1)
-    else if (diff < -50) scrollToSection(currentIndex - 1)
+    if (diff > 50) scrollToIndex(currentIndex + 1)
+    else if (diff < -50) scrollToIndex(currentIndex - 1)
   }
 
   window.addEventListener('wheel', handleWheel, { passive: false })
@@ -78,6 +69,12 @@ onMounted(async () => {
     requestAnimationFrame(raf)
   }
   requestAnimationFrame(raf)
+
+  onUnmounted(() => {
+    window.removeEventListener('wheel', handleWheel)
+    window.removeEventListener('touchstart', handleTouchStart)
+    window.removeEventListener('touchend', handleTouchEnd)
+  })
 })
 </script>
 

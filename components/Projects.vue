@@ -1,6 +1,6 @@
 <template>
     <div class="base">
-        <h2>Projects:</h2>
+        <h2 class="mt-8 mb-0">Projects:</h2>
         <div class="carousel">
             <div class="carousel-track" ref="track">
                 <ProjectsCard v-for="(project, index) in duplicatedProjects" :key="index" :image="project.image"
@@ -93,13 +93,15 @@ onBeforeUnmount(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 1rem 0;
-    height: 100vh;
+    height: 500px;
 }
 
 .carousel {
     overflow: hidden;
     width: 100%;
+    height: 500px;
 }
 
 .carousel-track {

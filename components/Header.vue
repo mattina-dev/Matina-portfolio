@@ -1,71 +1,120 @@
 <template>
-    <header class="hero">
+    <header class="finisher-header hero" ref="headerRef">
         <div class="hero-text">
-            <h1>Matina safaei</h1>
-            <p>Frontend Developer specializing in Vue.js, Nuxt 3, and modern UI/UX design.</p>
+            <h1>Matina Safaei</h1>
+            <p class="typing-text">
+                Frontend Developer specializing in Vue.js, Nuxt 3, and modern UI/UX design.
+            </p>
         </div>
         <div class="hero-image">
-            <!-- You can put your image here later -->
             <img src="../assets/photo_2025-10-03_19-00-38-Photoroom.png" alt="Matina Photo" />
         </div>
     </header>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted, nextTick } from 'vue';
+
+const headerRef = ref(null);
+
+onMounted(async () => {
+  await nextTick(); // ensures DOM fully rendered
+
+  const script = document.createElement('script');
+  script.src = '/js/finisher-header.es5.min.js';
+  script.onload = () => {
+    if (window.FinisherHeader) {
+      new window.FinisherHeader({
+        className: 'finisher-header', // library expects className
+        count: 12,
+        size: { min: 1300, max: 1500, pulse: 0 },
+        speed: { x: { min: 0.6, max: 3 }, y: { min: 0.6, max: 3 } },
+        colors: { background: "#4b352a", particles: ["#b75321", "#d9c4b0", "#bf9264", "#f8f4e1"] },
+        blending: "lighten",
+        opacity: { center: 0.6, edge: 0 },
+        skew: -2,
+        shapes: ["c"]
+      });
+    }
+  };
+  document.body.appendChild(script);
+});
+</script>
 
 <style scoped>
 .hero {
     display: flex;
     align-items: center;
-    /* vertically center content */
     justify-content: space-between;
-    /* space between text and image */
     height: 100vh;
-    /* full viewport height */
-    padding: 0rem 4rem;
-    background-color: #f5f5f5;
+    padding: 0 4rem;
+    overflow: hidden;
+    position: relative;
 }
 
-.hero-text {
-    max-width: 50%;
+.finisher-header canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.hero-text,
+.hero-image {
+    position: relative;
+    z-index: 2;
 }
 
 .hero-text h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     margin-bottom: 1rem;
     color: rgb(139, 69, 19);
 }
 
-.hero-text p {
+.typing-text {
     font-size: 1.5rem;
     color: #555;
-}
-
-.hero-image {
-  position: relative;
-  max-width: 45%;
-  height: auto;
-}
-
-.hero-image::before {
-  content: '';
-  position: absolute;
-
-  width: 110%;
-  height: 200%;
-  bottom: 0%;
-  background: linear-gradient(90deg, rgba(139, 69, 19, 0.5), rgba(210,180,140,0));
-  transform: rotate(-180deg);
-  z-index: 0;
-  border-radius: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid rgb(139, 69, 19);
+    width: 0;
+    animation: typing 4s steps(60, end) forwards, blink 0.75s step-end infinite;
 }
 
 .hero-image img {
-  position: relative;
-  width: 100%;
-  height: auto;
-  z-index: 1;
-  border-radius: 1rem;
-  object-fit: cover;
+    width: 100%;
+    border-radius: 1rem;
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
 }
 </style>

@@ -35,7 +35,9 @@ defineProps({
 
 <style scoped>
 
-
+.base{
+    height: 500px;
+}
 .card {
     width: 350px;
     height: 450px;
