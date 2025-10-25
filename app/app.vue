@@ -1,10 +1,8 @@
 <template>
   <v-app>
     <Header />
-    <client-only>
       <aboutme />
       <Projects />
-    </client-only>
     <NuxtPage />
     <Footer />
   </v-app>

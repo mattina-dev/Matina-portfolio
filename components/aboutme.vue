@@ -1,10 +1,10 @@
 <template>
-    <v-container class="about-container">
-        <v-row align="center" justify="space-between">
+    <div class="about-container">
+        <v-row align="center" justify="center" class="flex-column size">
             <!-- About Text -->
-            <div class="about-text d-flex flex-column align-center ">
+            <v-col cols="12" md="6" class="d-flex flex-column align-center text-center">
                 <h2 class="display-1 font-weight-bold mb-4">About Me</h2>
-                <p class="mb-4 ">
+                <p class="mb-4">
                     Hi! I’m Matina Safaei, a passionate Frontend Developer and UI/UX Enthusiast. I love
                     creating clean, interactive, and user-friendly web experiences. I enjoy combining
                     design and functionality to build websites and apps that delight users.
@@ -13,18 +13,26 @@
                     My main focus is on modern frontend technologies, responsive design, and smooth
                     animations. I’m constantly learning and exploring new ways to improve my craft.
                 </p>
-            </div>
-
-            <!-- Skills List -->
-            <v-col cols="12" md="5" class="skills-section">
+                 <div>
+                    <h4 class="mb-4">Education:</h4>
+                    <p>
+                        <b>Computer Engineering</b><br />
+                        Azad University of Karaj
+                    </p>
+                </div>
+            </v-col>
+        </v-row>
+        <!-- Skills List -->
+        <v-row align="center" justify="center" >
+            <v-col cols="12" md="5" class="skills-section text-center">
                 <h3 class="text-h5 font-weight-bold mb-3">Skills & Tools</h3>
 
                 <!-- Hands On -->
-                <div class="my-16">
+                <div class="my-6">
                     <h4 class="mb-4">Hands On:</h4>
                     <v-row class="d-flex justify-center">
-                        <v-col v-for="(skill, index) in skillIcons" :key="index" cols="4" sm="3" class="skill-icon">
-                            <img :src="skill.src" :alt="skill.alt" height="80" class="mx-5" />
+                        <v-col v-for="(skill, index) in skillIcons" :key="index" cols="2" sm="2" class="skill-icon">
+                            <img :src="skill.src" :alt="skill.alt" height="60" />
                         </v-col>
                     </v-row>
                 </div>
@@ -33,25 +41,17 @@
                 <div class="mb-16">
                     <h4 class="mb-4">Learning:</h4>
                     <v-row class="d-flex justify-center">
-                        <v-col v-for="(Nskill, index) in NskillIcons" :key="index" cols="4" sm="3" class="skill-icon">
-                            <img :src="Nskill.src" :alt="Nskill.alt" height="80" class="mx-5" />
+                        <v-col v-for="(Nskill, index) in NskillIcons" :key="index" cols="2" sm="2" class="skill-icon">
+                            <img :src="Nskill.src" :alt="Nskill.alt" height="60" />
                         </v-col>
                     </v-row>
                 </div>
-                <!--Education-->
-                <div>
-                    <h4 class="mb-4">
-                        Education:
-                    </h4>
-                    <p class="d-flex flex-column">
-                        <b >Computer engineering </b>
-                        azad university of karaj
 
-                    </p>
-                </div>
+                <!-- Education -->
+               
             </v-col>
         </v-row>
-    </v-container>
+    </div>
 </template>
 
 <script setup>
@@ -83,28 +83,19 @@ const NskillIcons = [
 .about-container {
     padding: 4rem 2rem;
     background-color: #fdf6f0;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
-    /* align-items: center; */
-}
-
-h2,
-h3,
-h4 {
-    color: #6b4226;
+    width: 100vw;
+    flex-direction: column;
 }
 
 .about-text p {
     color: #4e2c0a;
     line-height: 1.7;
     font-size: 1.1rem;
-    width: 70%;
 }
 
-
-
 .skills-section img {
-    display: block;
-    margin: 0 auto;
+    display: flex;
 }
 </style>
