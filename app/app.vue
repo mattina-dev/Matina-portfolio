@@ -33,13 +33,13 @@ const goTo = (index) => {
   currentIndex.value = i
   isAnimating = true
   // use transform for reliable full-screen snap
-  wrapEl.style.transition = 'transform 900ms cubic-bezier(.22,.9,.18,1)'
+  wrapEl.style.transition = 'transform 2000ms cubic-bezier(.25,.8,.25,1)'
   wrapEl.style.transform = `translateY(-${i * 100}vh)`
   // after transition ends, allow new navigation
   setTimeout(() => {
     isAnimating = false
     wrapEl.style.transition = ''
-  }, 950)
+  }, 2050)
 }
 
 const handleWheel = (e) => {
