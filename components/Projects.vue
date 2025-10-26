@@ -2,7 +2,7 @@
     <div class="base">
         <h2 class="mt-8 mb-0">Projects:</h2>
         <div class="carousel">
-            <div class="carousel-track" ref="track">
+            <div class="carousel-track" ref="track" :style="{ transform: `translateX(${position}px)` }">
                 <ProjectsCard v-for="(project, index) in duplicatedProjects" :key="index" :image="project.image"
                     :title="project.title" :description="project.description" :techStack="project.techStack"
                     :buttonText="project.buttonText" :link="project.link" @mouseenter="pause = true"
@@ -23,7 +23,7 @@ const projects = [
         description: 'Built scalable, mobile-friendly web apps with Vue.js and TypeScript. Ensured UI consistency and rapid product iterations.',
         techStack: ['Vue.js', 'TypeScript', 'Vuex', 'UI/UX', '+6 skills'],
         buttonText: 'View Website',
-        link: '', // add website if available
+        link: '',
     },
     {
         image: '/projects/majara.png',
@@ -39,7 +39,7 @@ const projects = [
         description: 'Built responsive interfaces, collaborated with product/design teams, and optimized front-end performance.',
         techStack: ['Vue.js', 'Vuex', 'UI/UX', '+4 skills'],
         buttonText: 'View Project',
-        link: '', // add website if available
+        link: '',
     },
     {
         image: '/projects/gama.png',
@@ -60,25 +60,28 @@ const projects = [
 ]
 
 // Duplicate projects for seamless loop
-const duplicatedProjects = [...projects, ...projects]
+const duplicatedProjects = [...projects, ...projects, ...projects]
 
 const track = ref(null)
 const pause = ref(false)
-const speed = 0.5
+const speed = 0.7
 let animationFrame = null
-let position = 0
+const position = ref(0)
+let trackWidth = 0
 
 function animate() {
     if (!pause.value && track.value) {
-        position -= speed
-        const halfWidth = track.value.scrollWidth / 2
-        if (Math.abs(position) >= halfWidth) position = 0
-        track.value.style.transform = `translateX(${position}px)`
+        position.value -= speed
+        // وقتی به نصف track رسیدیم، position را دوباره جلو می‌بریم تا پرش دیده نشود
+        if (Math.abs(position.value) >= trackWidth / 3) {
+            position.value += trackWidth / 3
+        }
     }
     animationFrame = requestAnimationFrame(animate)
 }
 
 onMounted(() => {
+    trackWidth = track.value.scrollWidth
     animationFrame = requestAnimationFrame(animate)
 })
 

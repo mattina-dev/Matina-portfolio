@@ -32,10 +32,8 @@ const goTo = (index) => {
   if (i === currentIndex.value) return
   currentIndex.value = i
   isAnimating = true
-  // use transform for reliable full-screen snap
   wrapEl.style.transition = 'transform 2000ms cubic-bezier(.25,.8,.25,1)'
   wrapEl.style.transform = `translateY(-${i * 100}vh)`
-  // after transition ends, allow new navigation
   setTimeout(() => {
     isAnimating = false
     wrapEl.style.transition = ''
@@ -65,7 +63,6 @@ const handleTouchEnd = (e) => {
 
 onMounted(async () => {
   await nextTick()
-  // ensure body doesn't scroll
   document.body.style.overflow = 'hidden'
   document.documentElement.style.overflow = 'hidden'
 
@@ -74,7 +71,6 @@ onMounted(async () => {
   window.addEventListener('touchstart', handleTouchStart, { passive: true })
   window.addEventListener('touchend', handleTouchEnd, { passive: true })
 
-  // ensure initial position
   const wrapEl = wrap.value
   if (wrapEl) {
     wrapEl.style.transform = 'translateY(0)'
@@ -86,7 +82,6 @@ onUnmounted(() => {
   window.removeEventListener('keydown', handleKey)
   window.removeEventListener('touchstart', handleTouchStart)
   window.removeEventListener('touchend', handleTouchEnd)
-  // restore scroll
   document.body.style.overflow = ''
   document.documentElement.style.overflow = ''
 })
