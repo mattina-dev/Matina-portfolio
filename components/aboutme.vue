@@ -27,7 +27,7 @@
                 <div class="info-column" :key="activeTab">
                     <!-- Education -->
                     <div v-if="activeTab === 'education'" class="d-flex flex-column align-center justify-center">
-                        <img src="../public/edu.png" width="180px" height="130px"/>
+                        <img src="../public/edu.png" width="130px" height="100px"/>
                         <b>Computer Engineering</b><br />
                         <span>Islamic Azad University of Karaj</span><br />
                         <p class="text-center align-center">

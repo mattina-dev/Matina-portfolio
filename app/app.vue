@@ -4,6 +4,8 @@
       <section class="section"><Header /></section>
       <section class="section"><aboutme /></section>
       <section class="section"><Projects /></section>
+            <section class="section"><Services/></section>
+
       <section class="section"><NuxtPage /></section>
       <section class="section"><Footer /></section>
     </div>
@@ -16,6 +18,7 @@ import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import aboutme from '../components/aboutme.vue'
 import Projects from '../components/Projects.vue'
+import Services from '../components/Services.vue'
 
 const wrap = ref(null)
 const currentIndex = ref(0)
