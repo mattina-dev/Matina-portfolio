@@ -1,6 +1,6 @@
 <template>
     <div class="base">
-        <h2 class="mt-8 mb-0">Projects:</h2>
+        <h1 class="mt-8 mb-0">Projects:</h1>
         <div class="carousel">
             <div class="carousel-track" ref="track" :style="{ transform: `translateX(${position}px)` }">
                 <ProjectsCard v-for="(project, index) in duplicatedProjects" :key="index" :image="project.image"

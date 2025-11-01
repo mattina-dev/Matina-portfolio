@@ -1,7 +1,7 @@
 <template>
     <div class="base">
         <div class="mb-8">
-            <h2>services:</h2>
+            <h1>services:</h1>
         </div>
         <div class="d-flex">
             <ServicesCard v-for="service in services" :key="index" :image="service.image" :title="service.title"
@@ -41,7 +41,6 @@ const services = [
     align-items: center;
     justify-content: center;
     padding: 1rem 0;
-    font-family: Montserrat;
     /* height: 100vh; */
 }
 </style>

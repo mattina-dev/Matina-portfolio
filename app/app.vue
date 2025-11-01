@@ -1,13 +1,27 @@
 <template>
   <v-app ref="appRef">
-    <div class="sections-wrap" ref="wrap">
-      <section class="section"><Header /></section>
-      <section class="section"><aboutme /></section>
-      <section class="section"><Projects /></section>
-            <section class="section"><Services/></section>
+    <Headers class="sticky-header" :go-to="goTo" :current-index="currentIndex" />
 
-      <section class="section"><NuxtPage /></section>
-      <section class="section"><Footer /></section>
+    <div class="sections-wrap" ref="wrap">
+      <section class="section">
+        <Header />
+      </section>
+      <section class="section">
+        <aboutme />
+      </section>
+      <section class="section">
+        <Projects />
+      </section>
+      <section class="section">
+        <Services />
+      </section>
+
+      <section class="section">
+        <NuxtPage />
+      </section>
+      <section class="section">
+        <Footer />
+      </section>
     </div>
   </v-app>
 </template>
@@ -19,6 +33,7 @@ import Footer from '../components/Footer.vue'
 import aboutme from '../components/aboutme.vue'
 import Projects from '../components/Projects.vue'
 import Services from '../components/Services.vue'
+import Headers from '../components/Headers.vue'
 
 const wrap = ref(null)
 const currentIndex = ref(0)
@@ -91,7 +106,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -104,6 +120,12 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
+}
+.sticky-header {
+  position: fixed;
+ display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .sections-wrap {
@@ -119,7 +141,19 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-    background-color: #fdf6f0;
+  background-color: #fdf6f0;
 
+}
+</style>
+
+<style>
+body {
+  font-family: 'Lato', sans-serif !important;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Montserrat', sans-serif !important;
 }
 </style>
