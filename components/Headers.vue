@@ -72,6 +72,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     color: #945034;
     text-decoration: none;
     transition: color 0.3s ease;
+    cursor: pointer;
 }
 
 .logo span {
@@ -96,6 +97,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     letter-spacing: 0.5px;
     position: relative;
     transition: color 0.3s ease;
+    cursor: pointer;
 }
 
 .nav-links a::after {

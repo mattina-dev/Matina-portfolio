@@ -34,6 +34,8 @@ import aboutme from '../components/aboutme.vue'
 import Projects from '../components/Projects.vue'
 import Services from '../components/Services.vue'
 import Headers from '../components/Headers.vue'
+import Lenis from '@studio-freight/lenis/types'
+const scroll = Lenis
 
 const wrap = ref(null)
 const currentIndex = ref(0)
