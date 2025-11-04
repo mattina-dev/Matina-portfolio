@@ -18,7 +18,7 @@
       <section class="section">
         <contactMe />
       </section>
-      <section class="section">
+      <section class="">
         <NuxtPage />
       </section>
       <section class="section">
