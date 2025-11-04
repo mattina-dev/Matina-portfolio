@@ -15,7 +15,9 @@
       <section class="section">
         <Services />
       </section>
-
+      <section class="section">
+        <contactMe />
+      </section>
       <section class="section">
         <NuxtPage />
       </section>
@@ -34,8 +36,10 @@ import aboutme from '../components/aboutme.vue'
 import Projects from '../components/Projects.vue'
 import Services from '../components/Services.vue'
 import Headers from '../components/Headers.vue'
+import contactMe from '../components/contactMe.vue'
 import Lenis from '@studio-freight/lenis/types'
 const scroll = Lenis
+
 
 const wrap = ref(null)
 const currentIndex = ref(0)
@@ -123,9 +127,10 @@ body {
   width: 100%;
   overflow: hidden;
 }
+
 .sticky-header {
   position: fixed;
- display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
