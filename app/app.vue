@@ -16,6 +16,9 @@
         <Services />
       </section>
       <section class="section">
+        <ExperiencePage />
+      </section>
+      <section class="section">
         <contactMe />
       </section>
       <section class="">
@@ -37,6 +40,7 @@ import Projects from '../components/Projects.vue'
 import Services from '../components/Services.vue'
 import Headers from '../components/Headers.vue'
 import contactMe from '../components/contactMe.vue'
+import ExperiencePage from '../components/ExperiencePage.vue'
 import Lenis from '@studio-freight/lenis/types'
 const scroll = Lenis
 

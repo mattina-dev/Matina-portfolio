@@ -9,7 +9,9 @@
                 <li :class="{ active: props.currentIndex === 1 }"><a @click.prevent="props.goTo(1)">About</a></li>
                 <li :class="{ active: props.currentIndex === 2 }"><a @click.prevent="props.goTo(2)">Projects</a></li>
                 <li :class="{ active: props.currentIndex === 3 }"><a @click.prevent="props.goTo(3)">Services</a></li>
-                <li :class="{ active: props.currentIndex === 4 }"><a @click.prevent="props.goTo(4)">Contact</a></li>
+                <li :class="{ active: props.currentIndex === 4 }"><a @click.prevent="props.goTo(4)">experiences</a></li>
+
+                <li :class="{ active: props.currentIndex === 5 }"><a @click.prevent="props.goTo(5)">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -123,6 +125,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     color: #945034;
     font-weight: 700;
 }
+
 .nav-links li.active a::after {
     width: 100%;
 }
