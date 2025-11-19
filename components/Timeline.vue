@@ -63,6 +63,7 @@ defineProps<{
   border-radius: 50%;
   background-color: #5b2b1ae8; /* main color */
   box-shadow: 0 0 8px #5b2b1a80;
+  transition: 0.3s;
 }
 
 .timeline-card {
@@ -75,6 +76,10 @@ defineProps<{
 .timeline-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 15px rgba(91, 43, 26, 0.25);
+}
+.timeline-item:hover .timeline-dot {
+  transform: scale(1.6);
+  box-shadow: 0 0 14px #5b2b1ac0;
 }
 
 .timeline-title {

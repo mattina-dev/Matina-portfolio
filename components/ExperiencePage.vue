@@ -7,30 +7,30 @@ import Timeline from "../components/Timeline.vue"
 
 const experiences = [
     {
-        title: "Digimenue",
-        date: "Feb 2024 → Present",
+        title: "Eivan Online",
+        date: "Apr 2025 → Sep 2025",
         details: [
-            "Interactive teamwork & feature development",
-            "Next.js + Tailwind for full design implementation",
-            "Stripe integration, Matterport 3D table viewer",
-            "Contribution to restaurant reservation system"
+            "Developed scalable, mobile-friendly web apps with Vue.js + TypeScript",
+            "Ensured visual consistency + responsiveness across devices",
+            "Supported rapid iterations using Vuex, Tailwind, and REST APIs"
         ]
     },
     {
-        title: "ShemiranWeb",
-        date: "Sep 2022 → Feb 2024",
+        title: "Majara.io",
+        date: "Aug 2024 → Apr 2025",
         details: [
-            "Template implementation with HTML, CSS, JS",
-            "Tailwind components based on Figma"
+            "Refactored & modernized the admin panel for clarity and usability",
+            "Cleaned legacy Vue.js codebase and optimized component performance",
+            "Collaborated with UI/UX to align visuals with the updated brand identity"
         ]
     },
     {
-        title: "Asrez",
-        date: "Jun 2021 → July 2023",
+        title: "Cyclical Waves",
+        date: "Jan 2023 → Jun 2024",
         details: [
-            "Built webapps for Kasian Media, Nota, Panda Cloud",
-            "Increased user engagement by 20%",
-            "React, Next.js, Pure JS development"
+            "Developed high-performance, interactive apps using Vue.js + TypeScript",
+            "Integrated real-time crypto APIs for live market visualizations",
+            "Applied UX principles to improve accessibility and design consistency"
         ]
     }
 ];
