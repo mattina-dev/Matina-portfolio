@@ -3,7 +3,8 @@
         <div class="hero-text">
             <h1 class="hero-title">Matina Safaei</h1>
             <p class="typing-text">
-                Frontend Developer specializing in Vue.js, Nuxt 3, and modern UI/UX design.
+                Vue.js + Nuxt 3 Frontend Developer crafting polished, intuitive, and visually calm experiences. I
+                combine modern UI/UX design with performance-focused development to create products people enjoy using.
             </p>
         </div>
         <div class="hero-image">
@@ -87,9 +88,11 @@ onMounted(async () => {
     font-size: 1.5rem;
     color: #555;
     white-space: nowrap;
+    white-space: normal;
+    display: inline-block;
+    max-width: 1800px;
+    /* adjust for your layout */
     overflow: hidden;
-    border-right: 3px solid rgb(139, 69, 19);
-    width: 0;
     animation: typing 4s steps(60, end) forwards, blink 0.75s step-end infinite;
 }
 
@@ -134,15 +137,7 @@ onMounted(async () => {
     }
 }
 
-@keyframes typing {
-    from {
-        width: 0;
-    }
-
-    to {
-        width: 100%;
-    }
-}
+/*  */
 
 @keyframes blink {
     50% {
