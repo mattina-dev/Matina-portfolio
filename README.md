@@ -1,34 +1,45 @@
-# Matina's Portfolio
+# Matina Safaei’s Portfolio
 
-Hi there! 👋 I'm **Matina**, a frontend developer passionate about creating **smooth, user-friendly web experiences**.  
-This portfolio is a **personal project** to showcase my skills, document my growth, and support my journey toward **product management and UX-focused development**.
+Hi there 👋  
+I’m **Matina Safaei** — a frontend developer with 3 years of experience working in Vue.js, TypeScript & JavaScript, passionate about UI/UX, and actively building toward a Product Manager role.
 
-## 🚀 About This Project
+This portfolio is my sandbox and showcase: where I build real projects, experiment with interactions, and document my growth — both in code quality and user experience.
 
-This portfolio is more than just a collection of projects — it’s a **space to experiment, learn, and improve**.  
-Built with **Vue.js, TypeScript, and modern web technologies**, it reflects my journey as a developer who values **both code quality and user experience**.
+---
 
-### Goals
+## 🎯 What You’ll Find Here
 
-- Showcase frontend development skills with a focus on **UI/UX**  
-- Build a **professional online presence**  
-- Experiment with **modern web animations and interactions**  
-- Document my growth as I move toward **product management**
+- A curated selection of my frontend projects that demonstrate:
+  - Vue.js + TypeScript architecture and best practices  
+  - UI/UX-driven design (I care about how things *feel*)  
+  - Animation & interaction polish  
+- Evidence of my upward journey into product thinking: how I ask “why”, not just “how”.
+- Links to my resume, LinkedIn, and design assets where relevant.
 
-## 🛠️ Technologies
+---
 
-- **Frontend:** Vue.js, TypeScript, nuxt ,  Vuetify  
-- **Animations:** lenis, CSS transitions  
-- **Design & Planning:** Figma, Notion
+## 🛠 Tech Stack + Tools
 
-## 💻 Getting Started
+- **Frontend**: Vue.js, Nuxt.js, TypeScript, Vuetify  
+- **Animations / UX polish**: lenis (or scroll-animation libs), CSS transitions & transforms  
+- **Design & Planning**: Figma, Notion (my task hub)  
+- **Version control & build tools**: Git, Vite, npm, etc.
 
-Follow these steps to run the project locally:
+---
 
-1. **Clone the repo:**  
-2. **Install dependencies:**  
+## 🚀 Getting Started (Local Dev)
+
+Want to run this portfolio locally? Cool — here’s how:
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/mattina-dev/Matina-portfolio.git
+
+# 2. Navigate into directory
+cd Matina-portfolio
+
+# 3. Install dependencies
 npm install
-3.**Run the development server:**
-  	npm run dev
 
-
+# 4. Start development server
+npm run dev
