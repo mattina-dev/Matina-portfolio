@@ -2,32 +2,34 @@
   <v-app ref="appRef">
     <Headers class="sticky-header" :go-to="goTo" :current-index="currentIndex" />
 
-    <div class="sections-wrap" ref="wrap">
-      <section class="section">
-        <Header />
-      </section>
-      <section class="section">
-        <aboutme />
-      </section>
-      <section class="section">
-        <Projects />
-      </section>
-      <section class="section">
-        <Services />
-      </section>
-      <section class="section">
-        <ExperiencePage />
-      </section>
-      <section class="section">
-        <contactMe />
-      </section>
-      <section class="">
-        <NuxtPage />
-      </section>
-      <section class="section">
-        <Footer />
-      </section>
-    </div>
+    <template v-if="$route.path === '/'">
+      <div class="sections-wrap" ref="wrap">
+        <section class="section">
+          <Header />
+        </section>
+        <section class="section">
+          <aboutme />
+        </section>
+        <section class="section">
+          <Projects />
+        </section>
+        <section class="section">
+          <Services />
+        </section>
+        <section class="section">
+          <ExperiencePage />
+        </section>
+        <section class="section">
+          <contactMe />
+        </section>
+        <section class="section">
+          <Footer />
+        </section>
+      </div>
+    </template>
+
+    <!-- Nuxt pages render here for all non-home routes -->
+    <NuxtPage />
   </v-app>
 </template>
 
@@ -122,6 +124,10 @@ body {
   width: 100%;
   margin: 0;
   overflow: hidden;
+}
+.nuxt-page {
+  height: auto !important;
+  overflow: visible !important;
 }
 
 .v-application,
