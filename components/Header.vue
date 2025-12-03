@@ -2,13 +2,16 @@
     <header class="finisher-header hero" ref="headerRef">
         <div class="hero-text">
             <h1 class="hero-title">Matina Safaei</h1>
-            <p class="typing-text">
-                Vue.js + Nuxt 3 Frontend Developer crafting polished, intuitive, and visually calm experiences. I
-                combine modern UI/UX design with performance-focused development to create products people enjoy using.
+            <p>Frontend Developer • UI/UX Designer
             </p>
+            <p class="typing-text">
+                Frontend Developer working with Vue.js & Nuxt 3 to build smooth, modern, human-centered interfaces. I
+                blend clean UI/UX with performance-focused engineering to ship experiences that feel effortless.
+            </p>
+            <h4>scroll to explore!</h4>
         </div>
         <div class="hero-image">
-            <img src="../assets/photo_2025-10-03_19-00-38-Photoroom.png" alt="Matina Photo" />
+            <img src="../assets/abc.png" alt="Matina Photo" />
         </div>
     </header>
 </template>
@@ -55,89 +58,59 @@ onMounted(async () => {
     align-items: center;
     justify-content: space-between;
     height: 100vh;
-    padding: 0 4rem;
-    overflow: hidden;
+    padding: 0 6rem;
     position: relative;
+    overflow: hidden;
+    /* warm creamy beige */
 }
 
+/* Ensure particles stay behind */
 .finisher-header canvas {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
 }
 
+/* Text + image layer */
 .hero-text,
 .hero-image {
     position: relative;
     z-index: 2;
     opacity: 0;
-    /* initial state for fade-in */
 }
+
+/* TEXT SIDE ---------------------------------------------------- */
 
 .hero-title {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
-    color: rgb(139, 69, 19);
+    font-size: 4rem;
+    line-height: 1.1;
+    font-weight: 700;
+    color: #6b3e24;
+    /* warm brown, premium */
+    margin-bottom: 0.5rem;
 }
 
-/* Typing effect */
+.hero-text p:first-of-type {
+    font-size: 1.2rem;
+    color: #8d6f57;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+}
+
+/* Typing effect but cleaner */
 .typing-text {
-    font-size: 1.5rem;
-    color: #555;
-    white-space: nowrap;
-    white-space: normal;
-    display: inline-block;
-    max-width: 1800px;
-    /* adjust for your layout */
+    font-size: 1.35rem;
+    color: #4d3a32;
+    max-width: 650px;
     overflow: hidden;
+    display: block;
+    line-height: 1.55;
     animation: typing 4s steps(60, end) forwards, blink 0.75s step-end infinite;
 }
 
-/* Image floating */
-.hero-image img {
-    width: 100%;
-    border-radius: 1rem;
-    animation: float 6s ease-in-out infinite, scaleBounce 3s ease-in-out infinite;
-}
 
-/* Fade-in & slide animation */
-.fade-slide-in {
-    animation: fadeSlide 3.2s forwards;
-}
-
-.fade-slide-in-image {
-    animation: fadeSlideImage 1.2s forwards;
-}
-
-/* Keyframes */
-@keyframes fadeSlide {
-    0% {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeSlideImage {
-    0% {
-        opacity: 0;
-        transform: translateY(30px) scale(0.9);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/*  */
 
 @keyframes blink {
     50% {
@@ -145,27 +118,96 @@ onMounted(async () => {
     }
 }
 
-@keyframes float {
+/* "Scroll to explore" */
+.hero-text h4 {
+    margin-top: 2rem;
+    font-weight: 500;
+    color: #6f594c;
+    opacity: 0.85;
+    letter-spacing: 0.5px;
+}
 
-    0%,
-    100% {
-        transform: translateY(0);
+
+/* IMAGE SIDE --------------------------------------------------- */
+
+.hero-image {
+    max-width: 40%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.hero-image img {
+    width: 88%;
+    border-radius: 1.25rem;
+    transition: transform 0.6s ease;
+}
+
+.hero-image img:hover {
+    transform: scale(1.015);
+}
+
+/* ENTRY ANIMATIONS --------------------------------------------- */
+
+.fade-slide-in {
+    animation: fadeSlide 1.4s ease forwards;
+}
+
+.fade-slide-in-image {
+    animation: fadeSlideImage 1.4s ease forwards 0.2s;
+}
+
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
     }
 
-    50% {
-        transform: translateY(-15px);
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-@keyframes scaleBounce {
-
-    0%,
-    100% {
-        transform: scale(1);
+@keyframes fadeSlideImage {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
     }
 
-    50% {
-        transform: scale(1.05);
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* RESPONSIVE --------------------------------------------------- */
+
+@media (max-width: 1024px) {
+    .hero {
+        flex-direction: column-reverse;
+        padding: 2rem;
+        height: auto;
+        text-align: center;
+    }
+
+    .hero-image {
+        max-width: 65%;
+        margin-bottom: 2rem;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.4rem;
+    }
+
+    .typing-text {
+        font-size: 1.1rem;
     }
 }
 </style>
