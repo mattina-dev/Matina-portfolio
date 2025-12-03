@@ -1,64 +1,88 @@
 <template>
-    <header class="finisher-header hero" ref="headerRef">
-        <div class="hero-text">
-            <h1 class="hero-title">Matina Safaei</h1>
-            <p>Frontend Developer • UI/UX Designer
-            </p>
-            <p class="typing-text">
-                Frontend Developer working with Vue.js & Nuxt 3 to build smooth, modern, human-centered interfaces. I
-                blend clean UI/UX with performance-focused engineering to ship experiences that feel effortless.
-            </p>
-            <h4>scroll to explore!</h4>
-        </div>
-        <div class="hero-image">
-            <img src="../assets/abc.png" alt="Matina Photo" />
-        </div>
-    </header>
+    <section ref="vantaRef" class="s-page-1 s-section-1 s-section">
+        <header class="hero">
+            <div class="hero-text">
+                <h1 class="hero-title">Matina Safaei</h1>
+                <p>Frontend Developer • UI/UX Designer</p>
+                <p class="typing-text">
+                    Frontend Developer working with Vue.js & Nuxt 3 to build smooth, modern, human-centered interfaces.
+                    I
+                    blend clean UI/UX with performance-focused engineering to ship experiences that feel effortless.
+                </p>
+                <h4>scroll to explore!</h4>
+            </div>
+            <div class="hero-image">
+                <img src="../assets/abc.png" alt="Matina Photo" />
+            </div>
+        </header>
+    </section>
 </template>
 
+
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-const headerRef = ref(null);
+const vantaRef = ref(null)
+let vantaEffect = null
 
-onMounted(async () => {
-    await nextTick();
+const initVanta = () => {
+    if (window.VANTA && vantaRef.value && !vantaEffect) {
+        vantaEffect = window.VANTA.TOPOLOGY({
+            el: vantaRef.value,
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200,
+            minWidth: 200,
+            scale: 1.0,
+            scaleMobile: 1.0,
+            color: 0x754230,          // warm brown
+            backgroundColor: 0xfdf6f0 // creamy beige
+        })
+    }
+}
 
-    // FinisherHeader particle effect
-    const script = document.createElement('script');
-    script.src = '/js/finisher-header.es5.min.js';
-    script.onload = () => {
-        if (window.FinisherHeader) {
-            new window.FinisherHeader({
-                className: 'finisher-header',
-                count: 12,
-                size: { min: 1300, max: 1500, pulse: 0 },
-                speed: { x: { min: 0.6, max: 3 }, y: { min: 0.6, max: 3 } },
-                colors: { background: "#4b352a", particles: ["#b75321", "#d9c4b0", "#bf9264", "#f8f4e1"] },
-                blending: "lighten",
-                opacity: { center: 0.6, edge: 0 },
-                skew: -2,
-                shapes: ["c"]
-            });
-        }
-    };
-    document.body.appendChild(script);
+onMounted(() => {
+    const script1 = document.createElement('script')
+    script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js'
+    script1.onload = () => {
+        const script2 = document.createElement('script')
+        script2.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.topology.min.js'
+        script2.onload = initVanta
+        document.body.appendChild(script2)
+    }
+    document.body.appendChild(script1)
+})
 
-    // Trigger fade-in animation
-    const heroText = document.querySelector('.hero-text');
-    const heroImage = document.querySelector('.hero-image');
-    heroText.classList.add('fade-slide-in');
-    heroImage.classList.add('fade-slide-in-image');
-});
+onBeforeUnmount(() => {
+    if (vantaEffect) vantaEffect.destroy()
+})
 </script>
 
 <style scoped>
+.s-page-1 .s-section-1 .s-section {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+
+}
+
+section {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+
+}
+
 .hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 100vh;
-    padding: 0 6rem;
+    padding: 0rem;
     position: relative;
     overflow: hidden;
     /* warm creamy beige */
@@ -78,7 +102,7 @@ onMounted(async () => {
 .hero-image {
     position: relative;
     z-index: 2;
-    opacity: 0;
+    opacity: 1;
 }
 
 /* TEXT SIDE ---------------------------------------------------- */
@@ -87,8 +111,7 @@ onMounted(async () => {
     font-size: 4rem;
     line-height: 1.1;
     font-weight: 700;
-    color: #6b3e24;
-    /* warm brown, premium */
+    color: #ab6e4b;
     margin-bottom: 0.5rem;
 }
 
@@ -103,11 +126,12 @@ onMounted(async () => {
 .typing-text {
     font-size: 1.35rem;
     color: #4d3a32;
-    max-width: 650px;
+    max-width: 750px;
     overflow: hidden;
     display: block;
     line-height: 1.55;
     animation: typing 4s steps(60, end) forwards, blink 0.75s step-end infinite;
+    
 }
 
 
@@ -123,7 +147,7 @@ onMounted(async () => {
     margin-top: 2rem;
     font-weight: 500;
     color: #6f594c;
-    opacity: 0.85;
+    font-size: large;
     letter-spacing: 0.5px;
 }
 
