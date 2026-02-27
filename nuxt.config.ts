@@ -16,6 +16,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["vuetify-nuxt-module"],
 
+  runtimeConfig: {
+    feedbackApiKey: process.env.FEEDBACK_API_KEY,
+    feedbackToEmail: process.env.FEEDBACK_TO_EMAIL,
+    feedbackFromEmail: process.env.FEEDBACK_FROM_EMAIL,
+  },
+
   vuetify: {
     theme: { defaultTheme: "light" },
     autoImport: true,

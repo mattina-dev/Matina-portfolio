@@ -1,6 +1,6 @@
 <template>
 
-    <div class="d-flex justify-space-around	w-100">
+    <div class="d-flex justify-space-around\tw-100">
         <div class=" mx-5">
             <h2 class="mb-8">social links
             </h2>
@@ -64,15 +64,20 @@
         <div class="feedback-section">
             <h2 class="mb-8">Give me your feedback!</h2>
             <div class="feedback-card">
-                <form @submit="sendEmail">                    <div class="input-group mb-8">
-                        <input type="text" id="subject" placeholder="Enter subject..." />
+                <form @submit.prevent="sendEmail">
+                    <div class="input-group mb-8">
+                        <input v-model="subject" type="text" id="subject" placeholder="Enter subject..." required />
                     </div>
 
                     <div class="input-group mb-8">
-                        <textarea id="message" placeholder="Write your feedback..."></textarea>
+                        <textarea v-model="message" id="message" placeholder="Write your feedback..." required></textarea>
                     </div>
 
-                    <button type="submit" class="btns send-btn">Send!</button>
+                    <p v-if="statusMessage" :class="['status', statusType]">{{ statusMessage }}</p>
+
+                    <button type="submit" class="btns send-btn" :disabled="isSending">
+                        {{ isSending ? 'Sending...' : 'Send!' }}
+                    </button>
                 </form>
             </div>
         </div>
@@ -84,15 +89,43 @@
 
 
 <script setup>
-function sendEmail(e) {
-  e.preventDefault();
-  // Simulate send action (could add actual logic here)
-  const subjectInput = document.getElementById('subject');
-  const messageInput = document.getElementById('message');
-  if (subjectInput && messageInput) {
-    subjectInput.value = '';
-    messageInput.value = '';
-  }
+import { ref } from 'vue'
+
+const subject = ref('')
+const message = ref('')
+const isSending = ref(false)
+const statusMessage = ref('')
+const statusType = ref('')
+
+async function sendEmail() {
+    if (!subject.value.trim() || !message.value.trim()) {
+        statusType.value = 'error'
+        statusMessage.value = 'Please fill in both subject and message.'
+        return
+    }
+
+    isSending.value = true
+    statusMessage.value = ''
+
+    try {
+        await $fetch('/api/feedback', {
+            method: 'POST',
+            body: {
+                subject: subject.value,
+                message: message.value,
+            },
+        })
+
+        subject.value = ''
+        message.value = ''
+        statusType.value = 'success'
+        statusMessage.value = 'Thanks! Your feedback was sent successfully.'
+    } catch (error) {
+        statusType.value = 'error'
+        statusMessage.value = error?.data?.statusMessage || 'Could not send feedback. Please try again.'
+    } finally {
+        isSending.value = false
+    }
 }
 </script>
 <style scoped>
@@ -118,8 +151,8 @@ function sendEmail(e) {
     width: 30px;
     height: 30px;
     text-decoration: none;
-    
-    
+
+
 }
 
 .social-item img {
@@ -147,7 +180,9 @@ h2 {
         height: 30px;
     }
 }
-input , textarea{
+
+input,
+textarea {
     width: 100%;
     border-bottom: #7b440d solid 1px;
 }
@@ -171,6 +206,7 @@ input , textarea{
         opacity: 0;
         transform: translateY(10px);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0);
@@ -191,6 +227,24 @@ input , textarea{
 .send-btn:hover {
     filter: brightness(1.1);
     transform: scale(1.05);
+}
+
+.send-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.status {
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.status.success {
+    color: #2e7d32;
+}
+
+.status.error {
+    color: #b71c1c;
 }
 
 .input-group input,

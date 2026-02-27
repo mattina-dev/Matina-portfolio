@@ -1,14 +1,14 @@
 <template>
-  <v-app ref="appRef">
+  <v-app ref="appRef" :class="{ 'home-mode': isHome }">
     <Headers class="sticky-header" :go-to="goTo" :current-index="currentIndex" />
 
-    <template v-if="$route.path === '/'">
+    <template v-if="isHome">
       <div class="sections-wrap" ref="wrap">
         <section class="section">
           <Header />
         </section>
         <section class="section">
-          <aboutme />
+          <AboutMe />
         </section>
         <section class="section">
           <Projects />
@@ -20,7 +20,7 @@
           <ExperiencePage />
         </section>
         <section class="section">
-          <contactMe />
+          <ContactMe />
         </section>
         <section class="section">
           <Footer />
@@ -29,28 +29,32 @@
     </template>
 
     <!-- Nuxt pages render here for all non-home routes -->
-    <NuxtPage />
+    <v-main v-else class="page-main">
+      <NuxtPage />
+    </v-main>
   </v-app>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { useRoute } from '#app'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
-import aboutme from '../components/aboutme.vue'
+import AboutMe from '../components/aboutme.vue'
 import Projects from '../components/Projects.vue'
 import Services from '../components/Services.vue'
 import Headers from '../components/Headers.vue'
-import contactMe from '../components/contactMe.vue'
+import ContactMe from '../components/contactMe.vue'
 import ExperiencePage from '../components/ExperiencePage.vue'
-import Lenis from '@studio-freight/lenis/types'
-const scroll = Lenis
 
 
 const wrap = ref(null)
 const currentIndex = ref(0)
 let isAnimating = false
 let touchStartY = 0
+
+const route = useRoute()
+const isHome = computed(() => route.path === '/')
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 
@@ -91,11 +95,10 @@ const handleTouchEnd = (e) => {
   else if (diff < -50) goTo(currentIndex.value - 1)
 }
 
-onMounted(async () => {
+const enableHomeScroll = async () => {
   await nextTick()
   document.body.style.overflow = 'hidden'
   document.documentElement.style.overflow = 'hidden'
-
   window.addEventListener('wheel', handleWheel, { passive: false })
   window.addEventListener('keydown', handleKey)
   window.addEventListener('touchstart', handleTouchStart, { passive: true })
@@ -105,15 +108,30 @@ onMounted(async () => {
   if (wrapEl) {
     wrapEl.style.transform = 'translateY(0)'
   }
-})
+}
 
-onUnmounted(() => {
+const disableHomeScroll = () => {
   window.removeEventListener('wheel', handleWheel)
   window.removeEventListener('keydown', handleKey)
   window.removeEventListener('touchstart', handleTouchStart)
   window.removeEventListener('touchend', handleTouchEnd)
   document.body.style.overflow = ''
   document.documentElement.style.overflow = ''
+}
+
+onMounted(() => {
+  watch(
+    isHome,
+    (home) => {
+      if (home) enableHomeScroll()
+      else disableHomeScroll()
+    },
+    { immediate: true }
+  )
+})
+
+onUnmounted(() => {
+  disableHomeScroll()
 })
 </script>
 
@@ -133,8 +151,12 @@ body {
 .v-application,
 .v-application__wrap,
 .v-app {
-  height: 100%;
+  min-height: 100vh;
   width: 100%;
+}
+
+.home-mode {
+  height: 100%;
   overflow: hidden;
 }
 
@@ -160,6 +182,14 @@ body {
   justify-content: center;
   background-color: #fdf6f0;
 
+}
+
+.page-main {
+  min-height: 100vh;
+  width: 100%;
+  overflow: auto;
+  padding-top: 88px;
+  background-color: #fdf6f0;
 }
 </style>
 
