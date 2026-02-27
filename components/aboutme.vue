@@ -88,4 +88,28 @@ const stackIcons = [
         transform: translateY(-2px);
     }
 }
+
+@media (max-width: 900px) {
+    .intro-section {
+        padding: 4.8rem 1.1rem 2rem;
+    }
+
+    .text-wrapper h2 {
+        font-size: 1.9rem;
+    }
+
+    .text-wrapper p {
+        font-size: 0.98rem;
+        line-height: 1.7;
+    }
+
+    .stack-icons {
+        gap: 1rem;
+    }
+
+    .stack-icons img {
+        width: 40px;
+        height: 40px;
+    }
+}
 </style>

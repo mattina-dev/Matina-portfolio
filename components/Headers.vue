@@ -2,7 +2,7 @@
     <header :class="['site-header', { scrolled: isScrolled }]">
         <nav class="nav-container">
             <div class="logo">
-                <a @click.prevent="props.goTo(0)">Matina<span>Safaei</span></a>
+                <a href="/" @click.prevent="handleLogoClick">Matina<span>Safaei</span></a>
             </div>
 
             <ul class="nav-links">
@@ -19,8 +19,11 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from '#app'
 
 const isScrolled = ref(false)
+const route = useRoute()
+const router = useRouter()
 
 const handleScroll = () => {
     // optional if you ever use native scroll
@@ -30,6 +33,15 @@ const props = defineProps({
     goTo: Function,
     currentIndex: Number
 })
+
+const handleLogoClick = async () => {
+    if (route.path === '/') {
+        if (props.goTo) props.goTo(0)
+        return
+    }
+    await router.push('/')
+}
+
 onMounted(() => window.addEventListener('scroll', handleScroll))
 onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 </script>
@@ -41,7 +53,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     left: 50%;
     transform: translateX(-50%);
     background: rgba(255, 255, 255, 0.9);
-    width: 60%;
+    width: min(92%, 980px);
     z-index: 2000;
     backdrop-filter: blur(8px);
     transition: all 0.4s ease;
@@ -62,7 +74,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 4rem;
+    padding: 0.9rem 1.4rem;
 
     width: 100%;
     font-family: 'Montserrat', sans-serif;
@@ -87,9 +99,10 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: 1.2rem;
     list-style: none;
     margin: 0;
+    padding: 0;
 }
 
 .nav-links a {
@@ -128,5 +141,36 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 .nav-links li.active a::after {
     width: 100%;
+}
+
+@media (max-width: 900px) {
+    .site-header {
+        top: 8px;
+        border-radius: 18px;
+    }
+
+    .nav-container {
+        padding: 0.65rem 0.8rem;
+        gap: 0.8rem;
+    }
+
+    .logo a {
+        font-size: 1rem;
+    }
+
+    .nav-links {
+        gap: 0.7rem;
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-links a {
+        font-size: 0.88rem;
+    }
 }
 </style>

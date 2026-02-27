@@ -50,11 +50,16 @@ import ExperiencePage from '../components/ExperiencePage.vue'
 
 const wrap = ref(null)
 const currentIndex = ref(0)
+const isMobile = ref(false)
 let isAnimating = false
 let touchStartY = 0
 
 const route = useRoute()
 const isHome = computed(() => route.path === '/')
+const isHomeDesktop = computed(() => isHome.value && !isMobile.value)
+const setViewportMode = () => {
+  isMobile.value = window.innerWidth <= 960
+}
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 
@@ -63,6 +68,17 @@ const goTo = (index) => {
   if (!wrapEl) return
   const count = wrapEl.children.length
   const i = clamp(index, 0, count - 1)
+
+  if (!isHomeDesktop.value) {
+    currentIndex.value = i
+    const target = wrapEl.children[i]
+    if (!target) return
+    const headerOffset = 88
+    const top = target.getBoundingClientRect().top + window.scrollY - headerOffset
+    window.scrollTo({ top, behavior: 'smooth' })
+    return
+  }
+
   if (i === currentIndex.value) return
   currentIndex.value = i
   isAnimating = true
@@ -75,6 +91,7 @@ const goTo = (index) => {
 }
 
 const handleWheel = (e) => {
+  if (!isHomeDesktop.value) return
   e.preventDefault()
   if (isAnimating) return
   if (e.deltaY > 0) goTo(currentIndex.value + 1)
@@ -82,6 +99,7 @@ const handleWheel = (e) => {
 }
 
 const handleKey = (e) => {
+  if (!isHomeDesktop.value) return
   if (isAnimating) return
   if (e.key === 'ArrowDown' || e.key === 'PageDown') goTo(currentIndex.value + 1)
   else if (e.key === 'ArrowUp' || e.key === 'PageUp') goTo(currentIndex.value - 1)
@@ -89,6 +107,7 @@ const handleKey = (e) => {
 
 const handleTouchStart = (e) => (touchStartY = e.touches[0].clientY)
 const handleTouchEnd = (e) => {
+  if (!isHomeDesktop.value) return
   if (isAnimating) return
   const diff = touchStartY - e.changedTouches[0].clientY
   if (diff > 50) goTo(currentIndex.value + 1)
@@ -120,10 +139,12 @@ const disableHomeScroll = () => {
 }
 
 onMounted(() => {
+  setViewportMode()
+  window.addEventListener('resize', setViewportMode)
   watch(
-    isHome,
-    (home) => {
-      if (home) enableHomeScroll()
+    isHomeDesktop,
+    (homeDesktop) => {
+      if (homeDesktop) enableHomeScroll()
       else disableHomeScroll()
     },
     { immediate: true }
@@ -131,6 +152,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  window.removeEventListener('resize', setViewportMode)
   disableHomeScroll()
 })
 </script>
@@ -190,6 +212,28 @@ body {
   overflow: auto;
   padding-top: 88px;
   background-color: #fdf6f0;
+}
+
+@media (max-width: 960px) {
+  .home-mode {
+    height: auto;
+    overflow: auto;
+  }
+
+  .sections-wrap {
+    height: auto;
+    transform: none !important;
+  }
+
+  .section {
+    height: auto;
+    min-height: 100svh;
+    padding: 1.2rem 0.8rem;
+  }
+
+  .page-main {
+    padding-top: 76px;
+  }
 }
 </style>
 

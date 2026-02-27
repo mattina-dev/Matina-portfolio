@@ -1,16 +1,11 @@
 <template>
-  <v-card
-    width="350"
-    height="400"
-    class="custom-card mx-4"
-    elevation="10"
-  >
+  <v-card class="service-card" elevation="6">
     <v-img
       :src="image"
       :alt="title"
       class="card-image"
-      width="150"
-      height="140"
+      width="96"
+      height="86"
     ></v-img>
 
     <div class="card-content">
@@ -29,29 +24,32 @@ defineProps<{
 </script>
 
 <style scoped>
-.custom-card {
+.service-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 20px;
+  padding: 1rem;
   border-radius: 16px;
   background-color: white;
   transition: all 0.5s ease;
   cursor: pointer;
+  width: min(100%, 360px);
+  min-height: 320px;
+  margin: 0 auto;
 }
 
-.custom-card:hover {
+.service-card:hover {
   transform: translateY(-10px) scale(1.05);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
   background-color: #BF9264; 
 }
 
 .card-image {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   transition: transform 0.5s ease;
 }
-.custom-card:hover .card-image {
+.service-card:hover .card-image {
   transform: rotate(12deg);
 }
 
@@ -75,11 +73,17 @@ defineProps<{
 }
 
 /* Hover states */
-.custom-card:hover .card-content {
+.service-card:hover .card-content {
   color: white; /* description becomes white */
 }
 
-.custom-card:hover .card-title {
+.service-card:hover .card-title {
   color: white; /* title becomes white on hover */
+}
+
+@media (max-width: 960px) {
+  .service-card {
+    min-height: 260px;
+  }
 }
 </style>

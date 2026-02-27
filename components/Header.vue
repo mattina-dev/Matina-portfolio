@@ -208,16 +208,21 @@ section {
 /* RESPONSIVE --------------------------------------------------- */
 
 @media (max-width: 1024px) {
+    section {
+        min-height: 100svh;
+    }
+
     .hero {
         flex-direction: column-reverse;
-        padding: 2rem;
+        padding: 4.6rem 1.2rem 1.4rem;
         height: auto;
         text-align: center;
+        gap: 1rem;
     }
 
     .hero-image {
         max-width: 65%;
-        margin-bottom: 2rem;
+        margin-bottom: 0.8rem;
     }
 
     .hero-title {
@@ -226,12 +231,25 @@ section {
 }
 
 @media (max-width: 768px) {
+    .hero {
+        padding-top: 4.2rem;
+    }
+
+    .hero-image {
+        max-width: 82%;
+    }
+
     .hero-title {
         font-size: 2.4rem;
     }
 
     .typing-text {
         font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .hero-text h4 {
+        margin-top: 1rem;
     }
 }
 </style>

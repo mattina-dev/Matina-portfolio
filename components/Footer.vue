@@ -119,6 +119,16 @@ a:hover {
 }
 
 @media (max-width: 860px) {
+  .site-footer {
+    min-height: auto;
+    padding: 1rem 0;
+  }
+
+  .footer-shell {
+    padding: 1.2rem 0.9rem;
+    border-radius: 14px;
+  }
+
   .footer-grid {
     grid-template-columns: 1fr;
   }

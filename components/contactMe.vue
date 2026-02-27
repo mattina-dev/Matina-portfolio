@@ -256,6 +256,21 @@ textarea:focus {
 @media (max-width: 960px) {
     .contact-wrap {
         grid-template-columns: 1fr;
+        padding: 0.8rem;
+        gap: 1rem;
+    }
+
+    .contact-info {
+        padding: 0.4rem 0.2rem;
+    }
+
+    .feedback-card {
+        padding: 1rem;
+    }
+
+    .send-btn {
+        width: 100%;
+        border-radius: 12px;
     }
 }
 </style>

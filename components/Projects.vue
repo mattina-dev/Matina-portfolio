@@ -45,7 +45,7 @@ const projects = [
         image: '/projects/gama.png',
         title: 'Gama Train',
         description: 'Built scalable, mobile-friendly apps with Vue.js and TypeScript. Ensured UI consistency and rapid product iterations.',
-        techStack: ['Vue.js', 'Pinia', 'Front-End Development', '+1 skill'],
+        techStack: ['Vue.js', 'Pinia', '+1 skill'],
         buttonText: 'View Project',
         link: '',
     },
@@ -97,14 +97,14 @@ onBeforeUnmount(() => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1rem 0;
+    padding: 1rem 0 1.2rem;
     /* height: 100vh; */
 }
 
 .carousel {
     overflow: hidden;
     width: 100%;
-    height: 500px;
+    height: 540px;
 }
 
 .carousel-track {
@@ -112,5 +112,15 @@ onBeforeUnmount(() => {
     gap: 24px;
     width: max-content;
     will-change: transform;
+}
+
+@media (max-width: 900px) {
+    .carousel {
+        height: 500px;
+    }
+
+    .carousel-track {
+        gap: 14px;
+    }
 }
 </style>
