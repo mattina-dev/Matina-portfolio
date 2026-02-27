@@ -79,10 +79,13 @@ const stackIcons = [
     font-weight: 600;
     text-decoration: none;
     transition: transform 0.2s, background-color 0.2s;
+    touch-action: manipulation;
 }
 
-.btn-know:hover {
-    background-color: #d4b798;
-    transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+    .btn-know:hover {
+        background-color: #d4b798;
+        transform: translateY(-2px);
+    }
 }
 </style>

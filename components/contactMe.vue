@@ -1,77 +1,49 @@
 <template>
+    <section class="contact-wrap">
+        <aside class="contact-info">
+            <p class="eyebrow">Contact</p>
+            <h2>Let’s Build Something Useful</h2>
+            <p class="intro">
+                If you have a project, role, or product challenge, send me a message with context and goals.
+                I focus on product-minded frontend execution with clean delivery.
+            </p>
 
-    <div class="d-flex justify-space-around\tw-100">
-        <div class=" mx-5">
-            <h2 class="mb-8">social links
-            </h2>
-
-            <div class="social">
-
-                <p class="social-item">
-                    <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer"
-                        aria-label="GitHub">
-                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg"
-                            alt="GitHub icon" />
-                    </a>
-                </p>
-
-                <p class="social-item">
-                    <a href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer"
-                        aria-label="LinkedIn">
-                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg"
-                            alt="LinkedIn icon" />
-                    </a>
-                </p>
-                <p class="social-item">
-                    <a href="https://instagram.com/mattina-dev" target="_blank" rel="noopener noreferrer"
-                        aria-label="Instagram">
-                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
-                            alt="Instagram icon" />
-                    </a>
-                </p>
-
-                <p class="social-item">
-                    <a href="https://t.me/mattina_dev" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg"
-                            alt="Telegram icon" />
-                    </a>
-                </p>
-
-                <p class="social-item">
-                    <a href="https://wa.me/+989057056997" target="_blank" rel="noopener noreferrer"
-                        aria-label="WhatsApp">
-                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg"
-                            alt="WhatsApp icon" />
-                    </a>
-                </p>
-
-                <p class="social-item">
-                    <a href="mailto:matina.safaei@gmail.com" aria-label="Email">
-                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg"
-                            alt="Email icon" />
-                    </a>
-                </p>
-
-                <p class="social-item">
-                    <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer"
-                        aria-label="Twitter">
-                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg"
-                            alt="Twitter icon" />
-                    </a>
-                </p>
+            <div class="quick-links">
+                <a href="mailto:matina.safaei@gmail.com"><i class="mdi mdi-email-outline" /> matina.safaei@gmail.com</a>
+                <a href="https://github.com/mattina-dev" target="_blank" rel="noopener noreferrer"><i class="mdi mdi-github" /> GitHub</a>
+                <a href="https://www.linkedin.com/in/matina-safaei" target="_blank" rel="noopener noreferrer"><i class="mdi mdi-linkedin" /> LinkedIn</a>
+                <a href="https://instagram.com/mattina-dev" target="_blank" rel="noopener noreferrer"><i class="mdi mdi-instagram" /> Instagram</a>
+                <a href="https://t.me/mattina_dev" target="_blank" rel="noopener noreferrer"><i class="mdi mdi-send" /> Telegram</a>
+                <a href="https://wa.me/+989057056997" target="_blank" rel="noopener noreferrer"><i class="mdi mdi-whatsapp" /> WhatsApp</a>
             </div>
-        </div>
+
+            <p class="micro-note">Usually responds within 24-48 hours.</p>
+        </aside>
+
         <div class="feedback-section">
-            <h2 class="mb-8">Give me your feedback!</h2>
+            <h2 class="mb-8">Project Inquiry / Feedback</h2>
             <div class="feedback-card">
                 <form @submit.prevent="sendEmail">
+                    <div class="input-group mb-8">
+                        <input v-model="name" type="text" id="name" placeholder="Your name" required />
+                    </div>
+
+                    <div class="input-group mb-8">
+                        <input v-model="email" type="email" id="email" placeholder="Your email" required />
+                    </div>
+
                     <div class="input-group mb-8">
                         <input v-model="subject" type="text" id="subject" placeholder="Enter subject..." required />
                     </div>
 
                     <div class="input-group mb-8">
-                        <textarea v-model="message" id="message" placeholder="Write your feedback..." required></textarea>
+                        <textarea v-model="message" id="message" placeholder="Write your feedback..." maxlength="1200"
+                            required></textarea>
                     </div>
+
+                    <input v-model="website" type="text" class="honeypot" tabindex="-1" autocomplete="off"
+                        aria-hidden="true" />
+                    <p class="char-counter">{{ message.length }}/1200</p>
 
                     <p v-if="statusMessage" :class="['status', statusType]">{{ statusMessage }}</p>
 
@@ -81,9 +53,7 @@
                 </form>
             </div>
         </div>
-
-
-    </div>
+    </section>
 
 </template>
 
@@ -91,16 +61,19 @@
 <script setup>
 import { ref } from 'vue'
 
+const name = ref('')
+const email = ref('')
 const subject = ref('')
 const message = ref('')
+const website = ref('')
 const isSending = ref(false)
 const statusMessage = ref('')
 const statusType = ref('')
 
 async function sendEmail() {
-    if (!subject.value.trim() || !message.value.trim()) {
+    if (!name.value.trim() || !email.value.trim() || !subject.value.trim() || !message.value.trim()) {
         statusType.value = 'error'
-        statusMessage.value = 'Please fill in both subject and message.'
+        statusMessage.value = 'Please fill in all fields.'
         return
     }
 
@@ -111,80 +84,82 @@ async function sendEmail() {
         await $fetch('/api/feedback', {
             method: 'POST',
             body: {
+                name: name.value,
+                email: email.value,
                 subject: subject.value,
                 message: message.value,
+                website: website.value,
             },
         })
 
+        name.value = ''
+        email.value = ''
         subject.value = ''
         message.value = ''
+        website.value = ''
         statusType.value = 'success'
-        statusMessage.value = 'Thanks! Your feedback was sent successfully.'
+        statusMessage.value = 'Message sent successfully. Thank you.'
     } catch (error) {
         statusType.value = 'error'
-        statusMessage.value = error?.data?.statusMessage || 'Could not send feedback. Please try again.'
+        statusMessage.value = error?.data?.statusMessage || 'Could not send your message. Please try again.'
     } finally {
         isSending.value = false
     }
 }
 </script>
 <style scoped>
-.social {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+.contact-wrap {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 1.2rem;
+}
+
+.contact-info {
+    padding: 1.4rem 1.2rem;
+}
+
+.eyebrow {
+    color: #9e6438;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    font-weight: 700;
     margin: 0;
-    padding: 0;
 }
 
-.social-item {
-    margin: 0 8px;
-    padding: 0;
-    line-height: 0;
-    transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
-    animation: fadeInUp 0.5s ease forwards;
-    opacity: 0;
+.intro {
+    color: #5f3b1d;
+    line-height: 1.75;
+    max-width: 50ch;
 }
 
-.social-item a {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
+.quick-links {
+    margin-top: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.quick-links a {
+    color: #6a3e1b;
     text-decoration: none;
-
-
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
 }
 
-.social-item img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-    filter: grayscale(100%) brightness(0.8);
-    transition: transform 0.2s ease, filter 0.2s ease;
+.quick-links a:hover {
+    text-decoration: underline;
 }
 
-.social-item img:hover {
-    filter: none;
-    transform: scale(1.5);
-}
-
-h2 {
-    color: #7b440d;
-    padding: 0 14px;
-}
-
-@media (min-width: 900px) {
-    .social-item a {
-        width: 30px;
-        height: 30px;
-    }
-}
-
-input,
-textarea {
-    width: 100%;
-    border-bottom: #7b440d solid 1px;
+.micro-note {
+    margin-top: 1rem;
+    color: #8a623d;
+    font-size: 0.9rem;
 }
 
 .feedback-card {
@@ -192,12 +167,14 @@ textarea {
     border-radius: 12px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     opacity: 0;
-    width: 500px;
+    width: 100%;
     animation: fadeInUp 0.6s ease forwards;
+    border: 1px solid #e6d2bf;
+    background: linear-gradient(155deg, #fff8f2, #f4e4d5);
 }
 
 .feedback-card:hover {
-    transform: scale(1.03);
+    transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(123, 68, 13, 0.3);
 }
 
@@ -247,6 +224,24 @@ textarea {
     color: #b71c1c;
 }
 
+.honeypot {
+    position: absolute;
+    left: -9999px;
+}
+
+.char-counter {
+    font-size: 0.8rem;
+    color: #8e6641;
+    margin-bottom: 0.8rem;
+}
+
+input,
+textarea {
+    width: 100%;
+    border-bottom: #7b440d solid 1px;
+    color: #3d2816;
+}
+
 .input-group input,
 textarea {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -256,5 +251,11 @@ textarea {
 textarea:focus {
     border-bottom-color: #b57f3d;
     outline: none;
+}
+
+@media (max-width: 960px) {
+    .contact-wrap {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
