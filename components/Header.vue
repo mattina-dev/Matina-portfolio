@@ -2,7 +2,7 @@
     <section ref="vantaRef" class="hero-section">
         <div class="hero">
             <div class="hero-text">
-                <p class="eyebrow">Frontend Engineer · Vue.js &amp; TypeScript</p>
+                <p class="eyebrow">Frontend Engineer · Vue.js · React · TypeScript</p>
                 <h1 class="hero-title">Matina Safaei</h1>
                 <p class="hero-role">Fintech dashboards &amp; real-time data visualization</p>
                 <p class="hero-lede">

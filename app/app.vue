@@ -133,13 +133,44 @@ const goTo = (index) => {
 const inOverlay = (target) =>
   target instanceof Element && !!target.closest('.v-overlay, [role="dialog"]')
 
+/*
+ * One gesture must advance exactly one section.
+ *
+ * A trackpad swipe is not a single event — it is a burst of ~20 wheel events
+ * with decaying momentum, spread over several hundred milliseconds. The old
+ * 2000ms transition happened to swallow that burst; at 600ms it no longer
+ * does, so the lock is held against the *gesture* instead: it releases only
+ * once the wheel has been quiet long enough for the momentum to have ended.
+ */
+let wheelLocked = false
+let momentumTimer = null
+const MOMENTUM_IDLE_MS = 220
+
+const releaseWhenGestureEnds = () => {
+  clearTimeout(momentumTimer)
+  momentumTimer = window.setTimeout(() => {
+    wheelLocked = false
+  }, MOMENTUM_IDLE_MS)
+}
+
 const handleWheel = (e) => {
   if (!isHomeDesktop.value) return
   if (inOverlay(e.target)) return
   e.preventDefault()
-  if (isAnimating) return
+
+  // Ignore trackpad jitter and horizontal-dominant scrolls.
+  if (Math.abs(e.deltaY) < 4 || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
+
+  if (isAnimating || wheelLocked) {
+    // Still inside the same gesture — keep the lock alive.
+    releaseWhenGestureEnds()
+    return
+  }
+
+  wheelLocked = true
   if (e.deltaY > 0) goTo(currentIndex.value + 1)
-  else if (e.deltaY < 0) goTo(currentIndex.value - 1)
+  else goTo(currentIndex.value - 1)
+  releaseWhenGestureEnds()
 }
 
 const handleKey = (e) => {
@@ -198,6 +229,8 @@ const enableHomeScroll = async () => {
 }
 
 const disableHomeScroll = () => {
+  clearTimeout(momentumTimer)
+  wheelLocked = false
   window.removeEventListener('wheel', handleWheel)
   window.removeEventListener('keydown', handleKey)
   window.removeEventListener('touchstart', handleTouchStart)

@@ -57,39 +57,40 @@
 }
 
 [data-theme="dark"] {
-    /* Skill's Fintech/Crypto palette: amber-gold on deep slate. Keeps the
-       warm brand accent while reading as a trading product. */
-    --bg: #0b1120;
-    --bg-elev: #141b2d;
-    --bg-subtle: #1b2338;
-    --bg-inset: #232d47;
+    /* Dark roast: the same coffee identity as the light theme, inverted.
+       Warm near-black browns rather than slate, with a caramel accent. */
+    --bg: #17100c;
+    --bg-elev: #211812;
+    --bg-subtle: #2b2019;
+    --bg-inset: #372a20;
 
-    --border: #2a3550;
-    --border-strong: #3b4a6b;
-    --border-control: #6478a3;
+    --border: #3a2b21;
+    --border-strong: #4d3a2c;
+    --border-control: #997457;
 
-    --text: #f1f5f9;
-    --text-muted: #b6c2d6;
-    --text-subtle: #9aa8c0;
+    --text: #f7efe7;
+    --text-muted: #d3bfab;
+    --text-subtle: #bda98f;
 
-    --accent: #f59e0b;
-    --accent-hover: #fbbf24;
-    --on-accent: #0b1120;
-    --accent-soft: rgba(245, 158, 11, 0.14);
-    --accent-line: #f59e0b;
+    --accent: #f0a63c;
+    --accent-hover: #f7bd68;
+    --on-accent: #17100c;
+    --accent-soft: rgba(240, 166, 60, 0.14);
+    --accent-line: #f0a63c;
 
-    --up: #34d17d;
-    --down: #f87171;
-    --warn: #fbbf24;
+    /* Market semantics stay legible but warm-leaning. */
+    --up: #4ec77a;
+    --down: #f4776b;
+    --warn: #e8b054;
 
-    --ring: #f59e0b;
+    --ring: #f0a63c;
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
-    --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.55);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
+    --shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.6);
 
-    --vanta-line: 0x27334d;
-    --vanta-bg: 0x0b1120;
+    --vanta-line: 0x3a2b21;
+    --vanta-bg: 0x17100c;
 
     color-scheme: dark;
 }
@@ -334,4 +335,9 @@ video {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
+}
+
+/* Near-black brand marks (e.g. the Next.js logo) vanish on the dark surface. */
+[data-theme="dark"] .stack-icons img.mono {
+    filter: invert(1);
 }

@@ -5,8 +5,8 @@
             <h2>Hello! I'm Matina Safaei</h2>
             <p class="lede">
                 A frontend engineer who likes the hard part of the job: keeping an interface fast, legible and
-                calm while real data moves underneath it. I work in Vue.js, Nuxt and TypeScript, and I care as
-                much about how a screen feels under load as how it looks in a mockup.
+                calm while real data moves underneath it. I work across Vue.js, Nuxt, React and TypeScript,
+                and I care as much about how a screen feels under load as how it looks in a mockup.
             </p>
 
             <ul class="stat-row">
@@ -25,10 +25,11 @@
             </ul>
 
             <div class="stack">
-                <p class="stack-label">Core stack</p>
+                <p class="stack-label">Stack I work in</p>
                 <ul class="stack-icons">
                     <li v-for="icon in stackIcons" :key="icon.alt">
-                        <img :src="icon.src" :alt="icon.alt" :title="icon.alt" width="36" height="36" loading="lazy" />
+                        <img :src="icon.src" :alt="icon.alt" :title="icon.alt" width="32" height="32" loading="lazy"
+                            :class="{ mono: icon.mono }" />
                         <span>{{ icon.alt }}</span>
                     </li>
                 </ul>
@@ -43,14 +44,28 @@
 </template>
 
 <script setup>
+const D = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons"
+
+/*
+ * Mirrors the skill list on /about — the resume is the source of truth, so add
+ * here only what's claimed there. `mono` marks logos that are near-black and
+ * would disappear on the dark theme; they get inverted in CSS.
+ */
 const stackIcons = [
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg", alt: "Vue.js" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nuxtjs/nuxtjs-original.svg", alt: "Nuxt" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", alt: "TypeScript" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg", alt: "JavaScript" },
+    { src: `${D}/vuejs/vuejs-original.svg`, alt: "Vue.js" },
+    { src: `${D}/nuxtjs/nuxtjs-original.svg`, alt: "Nuxt" },
+    { src: `${D}/react/react-original.svg`, alt: "React" },
+    { src: `${D}/nextjs/nextjs-original.svg`, alt: "Next.js", mono: true },
+    { src: `${D}/angularjs/angularjs-original.svg`, alt: "Angular" },
+    { src: `${D}/typescript/typescript-original.svg`, alt: "TypeScript" },
+    { src: `${D}/javascript/javascript-original.svg`, alt: "JavaScript" },
     { src: "https://pinia.vuejs.org/logo.svg", alt: "Pinia" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuetify/vuetify-original.svg", alt: "Vuetify" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg", alt: "Bootstrap" },
+    { src: `${D}/tailwindcss/tailwindcss-original.svg`, alt: "Tailwind" },
+    { src: `${D}/vuetify/vuetify-original.svg`, alt: "Vuetify" },
+    { src: `${D}/bootstrap/bootstrap-original.svg`, alt: "Bootstrap" },
+    { src: `${D}/graphql/graphql-plain.svg`, alt: "GraphQL" },
+    { src: `${D}/git/git-original.svg`, alt: "Git" },
+    { src: `${D}/figma/figma-original.svg`, alt: "Figma" },
 ];
 </script>
 
@@ -140,9 +155,9 @@ const stackIcons = [
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-2);
-    width: 76px;
-    padding: var(--space-3) var(--space-1);
+    gap: var(--space-1);
+    width: 72px;
+    padding: var(--space-2) var(--space-1);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--bg-elev);
@@ -155,8 +170,8 @@ const stackIcons = [
 }
 
 .stack-icons img {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
 }
 
 .stack-icons span {
@@ -183,12 +198,12 @@ const stackIcons = [
     }
 
     .stack-icons li {
-        width: 66px;
+        width: 60px;
     }
 
     .stack-icons img {
-        width: 28px;
-        height: 28px;
+        width: 24px;
+        height: 24px;
     }
 }
 </style>
