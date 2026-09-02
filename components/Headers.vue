@@ -6,19 +6,31 @@
             </div>
 
             <ul class="nav-links">
-                <li :class="{ active: props.currentIndex === 1 }"><a @click.prevent="props.goTo(1)">About</a></li>
-                <li :class="{ active: props.currentIndex === 2 }"><a @click.prevent="props.goTo(2)">Projects</a></li>
-                <li :class="{ active: props.currentIndex === 3 }"><a @click.prevent="props.goTo(3)">Services</a></li>
-                <li :class="{ active: props.currentIndex === 4 }"><a @click.prevent="props.goTo(4)">experiences</a></li>
-
-                <li :class="{ active: props.currentIndex === 5 }"><a @click.prevent="props.goTo(5)">Contact</a></li>
+                <li :class="{ active: isHome && props.currentIndex === 1 }"><a @click.prevent="navigate(1)">About</a>
+                </li>
+                <li :class="{ active: isHome && props.currentIndex === 2 }"><a @click.prevent="navigate(2)">Projects</a>
+                </li>
+                <li :class="{ active: isHome && props.currentIndex === 3 }"><a @click.prevent="navigate(3)">Services</a>
+                </li>
+                <li :class="{ active: isHome && props.currentIndex === 4 }"><a
+                        @click.prevent="navigate(4)">Experience</a></li>
+                <li :class="{ active: isHome && props.currentIndex === 5 }"><a @click.prevent="navigate(5)">Contact</a>
+                </li>
+                <li :class="{ active: route.path === '/demo/trading' }">
+                    <NuxtLink to="/demo/trading">Live Demo</NuxtLink>
+                </li>
             </ul>
+
+            <a class="resume-btn" href="/matina-safaei-resume.pdf" download>
+                <i class="mdi mdi-download-outline" />
+                <span>Resume</span>
+            </a>
         </nav>
     </header>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from '#app'
 
 const isScrolled = ref(false)
@@ -34,12 +46,23 @@ const props = defineProps({
     currentIndex: Number
 })
 
+const isHome = computed(() => route.path === '/')
+
 const handleLogoClick = async () => {
-    if (route.path === '/') {
+    if (isHome.value) {
         if (props.goTo) props.goTo(0)
         return
     }
     await router.push('/')
+}
+
+// Section links only scroll on the home page; from a sub-route they route home first.
+const navigate = async (index) => {
+    if (!isHome.value) {
+        await router.push('/')
+        await nextTick()
+    }
+    if (props.goTo) props.goTo(index)
 }
 
 onMounted(() => window.addEventListener('scroll', handleScroll))
@@ -101,11 +124,35 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     display: flex;
     gap: 1.2rem;
     list-style: none;
-    margin: 0;
+    margin: 0 auto 0 2rem;
     padding: 0;
 }
 
-.nav-links a {
+.resume-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.42rem 0.95rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #7b440d 0%, #b57f3d 100%);
+    color: #fff8f2;
+    font-weight: 700;
+    font-size: 0.86rem;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: filter 0.25s ease, transform 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .resume-btn:hover {
+        filter: brightness(1.08);
+        transform: translateY(-1px);
+    }
+}
+
+.nav-links a,
+.nav-links :deep(a) {
     color: #7a4a2f;
     text-decoration: none;
     font-weight: 500;
@@ -159,10 +206,24 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     }
 
     .nav-links {
+        margin: 0 0.5rem;
         gap: 0.7rem;
         overflow-x: auto;
         white-space: nowrap;
         scrollbar-width: none;
+    }
+
+    .resume-btn {
+        padding: 0.36rem 0.7rem;
+        font-size: 0.78rem;
+    }
+
+    .resume-btn span {
+        display: none;
+    }
+
+    .resume-btn::after {
+        content: 'CV';
     }
 
     .nav-links::-webkit-scrollbar {

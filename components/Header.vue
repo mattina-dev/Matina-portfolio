@@ -2,13 +2,24 @@
     <section ref="vantaRef" class="s-page-1 s-section-1 s-section">
         <header class="hero">
             <div class="hero-text">
+                <p class="hero-eyebrow">Frontend Engineer · Vue.js &amp; TypeScript</p>
                 <h1 class="hero-title">Matina Safaei</h1>
-                <p>Frontend Developer • UI/UX Designer</p>
+                <p class="hero-role">Fintech dashboards &amp; real-time data visualization</p>
                 <p class="typing-text">
-                    Frontend Developer working with Vue.js & Nuxt 3 to build smooth, modern, human-centered interfaces.
-                    I
-                    blend clean UI/UX with performance-focused engineering to ship experiences that feel effortless.
+                    I build data-heavy interfaces that stay fast under live data — streaming market feeds,
+                    trading dashboards and admin panels in Vue.js, Nuxt and TypeScript.
+                    3+ years turning noisy real-time data into screens people can actually read and act on.
                 </p>
+
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="/matina-safaei-resume.pdf" download>
+                        <i class="mdi mdi-download-outline" /> Download Resume (PDF)
+                    </a>
+                    <NuxtLink class="btn btn-ghost" to="/demo/trading">
+                        <i class="mdi mdi-chart-line-variant" /> View live demo
+                    </NuxtLink>
+                </div>
+
                 <h4>scroll to explore!</h4>
             </div>
             <div class="hero-image">
@@ -115,11 +126,64 @@ section {
     margin-bottom: 0.5rem;
 }
 
-.hero-text p:first-of-type {
-    font-size: 1.2rem;
+.hero-eyebrow {
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: #9e6438;
+    margin: 0 0 0.35rem;
+}
+
+.hero-role {
+    font-size: 1.35rem;
+    font-weight: 600;
     color: #8d6f57;
-    letter-spacing: 1px;
-    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.2rem;
+}
+
+/* Primary calls to action: resume download + clickable live demo */
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.6rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.7rem 1.25rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, filter 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #7b440d 0%, #b57f3d 100%);
+    color: #fff8f2;
+    box-shadow: 0 8px 18px rgba(123, 68, 13, 0.24);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: #7b440d;
+    border: 1.5px solid #c9a179;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .btn:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.05);
+    }
+
+    .btn-ghost:hover {
+        background-color: #f4e4d5;
+    }
 }
 
 /* Typing effect but cleaner */
@@ -144,7 +208,7 @@ section {
 
 /* "Scroll to explore" */
 .hero-text h4 {
-    margin-top: 2rem;
+    margin-top: 1.6rem;
     font-weight: 500;
     color: #6f594c;
     font-size: large;
@@ -228,6 +292,10 @@ section {
     .hero-title {
         font-size: 3rem;
     }
+
+    .hero-actions {
+        justify-content: center;
+    }
 }
 
 @media (max-width: 768px) {
@@ -250,6 +318,21 @@ section {
 
     .hero-text h4 {
         margin-top: 1rem;
+    }
+
+    .hero-role {
+        font-size: 1.1rem;
+        margin-bottom: 0.9rem;
+    }
+
+    .hero-actions {
+        margin-top: 1.2rem;
+        gap: 0.5rem;
+    }
+
+    .btn {
+        padding: 0.62rem 1rem;
+        font-size: 0.88rem;
     }
 }
 </style>

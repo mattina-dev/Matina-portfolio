@@ -4,34 +4,37 @@
       <div class="footer-grid">
         <section>
           <p class="eyebrow">Matina Safaei</p>
-          <h3>Product-Minded Frontend Developer</h3>
+          <h3>Fintech Dashboards &amp; Real-Time Data Visualization</h3>
           <p class="muted">
-            Building clean, scalable interfaces that connect user needs to business outcomes.
+            Vue.js and TypeScript interfaces that stay fast under live data — streaming feeds,
+            trading dashboards and admin panels.
           </p>
+          <a class="footer-cta" href="/matina-safaei-resume.pdf" download>
+            <i class="mdi mdi-download-outline" /> Download Resume (PDF)
+          </a>
         </section>
 
         <section>
-          <h4>Quick Links</h4>
+          <h4>Explore</h4>
           <div class="links">
-            <NuxtLink to="/about">About</NuxtLink>
-            <a href="/matina-safaei-resume.pdf" download>Download Resume</a>
+            <NuxtLink to="/demo/trading">Live Demo</NuxtLink>
+            <NuxtLink to="/about">About &amp; Resume</NuxtLink>
             <a href="mailto:matina.safaei@gmail.com">Email Me</a>
           </div>
         </section>
 
         <section>
-          <h4>Connect</h4>
+          <h4>Professional</h4>
           <div class="links">
-            <a href="https://github.com/mattina-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://www.linkedin.com/in/matina-safaei" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="https://instagram.com/mattina-dev" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://github.com/mattina-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
           </div>
         </section>
       </div>
 
       <div class="bottom-row">
         <p>© {{ year }} Matina Safaei. All rights reserved.</p>
-        <p>Designed for clarity, performance, and product impact.</p>
+        <p>Built with Nuxt 4, Vue 3 and TypeScript.</p>
       </div>
     </div>
   </footer>
