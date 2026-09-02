@@ -495,9 +495,12 @@ function frame(now: number): void {
         tickRate.value = ticksSinceSample
         worstFrame.value = worstSinceSample
         domRate.value = Math.round(domRendersSinceSample / elapsed)
-        coalesceRatio.value = domRendersSinceSample > 0
-            ? Math.max(1, Math.round(ticks / domRendersSinceSample))
-            : 1
+        // Only sample this while coalescing is on. In naive mode the ratio is
+        // 1 by definition, and showing that would undercut the comparison the
+        // surrounding copy is drawing.
+        if (coalesced.value && domRendersSinceSample > 0) {
+            coalesceRatio.value = Math.max(1, Math.round(ticks / domRendersSinceSample))
+        }
 
         framesSinceSample = 0
         worstSinceSample = 0
