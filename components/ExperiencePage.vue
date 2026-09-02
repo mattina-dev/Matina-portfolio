@@ -1,6 +1,9 @@
 <template>
     <section class="experience-page">
-        
+        <div class="experience-head">
+            <p class="eyebrow">Experience</p>
+            <h2>Where I've shipped</h2>
+        </div>
 
         <Timeline :items="experiences" />
     </section>
@@ -52,12 +55,28 @@ const experiences = [
 <style scoped>
 .experience-page {
     width: 100%;
-    max-width: 1100px;
+    max-width: var(--page-max);
     margin: 0 auto;
-    padding: 5.8rem 1rem 0.8rem;
-    height: 100%;
+    padding: var(--space-8) var(--space-4) var(--space-5);
     box-sizing: border-box;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+}
+
+.experience-head {
+    text-align: center;
+}
+
+.experience-head h2 {
+    font-size: var(--text-h1);
+    margin-top: var(--space-2);
+}
+
+@media (max-width: 960px) {
+    .experience-page {
+        padding: 5.5rem var(--space-3) var(--space-5);
+    }
 }
 </style>

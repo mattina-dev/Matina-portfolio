@@ -11,7 +11,7 @@
             <!-- Primary: the two channels an international client is expected to use -->
             <div class="primary-links">
                 <a class="cta cta-solid" href="mailto:matina.safaei@gmail.com">
-                    <i class="mdi mdi-email-outline" />
+                    <i class="mdi mdi-email-outline" aria-hidden="true" />
                     <span>
                         <strong>Email me</strong>
                         <small>matina.safaei@gmail.com</small>
@@ -20,7 +20,7 @@
 
                 <a v-if="calendlyUrl" class="cta cta-outline" :href="calendlyUrl" target="_blank"
                     rel="noopener noreferrer">
-                    <i class="mdi mdi-calendar-clock" />
+                    <i class="mdi mdi-calendar-clock" aria-hidden="true" />
                     <span>
                         <strong>Book a call</strong>
                         <small>30 min, pick a slot that works for you</small>
@@ -28,7 +28,7 @@
                 </a>
 
                 <a class="cta cta-outline" href="/matina-safaei-resume.pdf" download>
-                    <i class="mdi mdi-download-outline" />
+                    <i class="mdi mdi-download-outline" aria-hidden="true" />
                     <span>
                         <strong>Download Resume</strong>
                         <small>PDF, one page</small>
@@ -37,16 +37,16 @@
             </div>
 
             <p class="micro-note">
-                <i class="mdi mdi-clock-outline" /> Usually responds within 24–48 hours · Available for remote work
+                <i class="mdi mdi-clock-outline" aria-hidden="true" /> Usually responds within 24–48 hours · Available for remote work
             </p>
 
             <!-- Professional profiles -->
             <div class="profile-links">
                 <a href="https://www.linkedin.com/in/matina-safaei" target="_blank" rel="noopener noreferrer">
-                    <i class="mdi mdi-linkedin" /> LinkedIn
+                    <i class="mdi mdi-linkedin" aria-hidden="true" /> LinkedIn
                 </a>
                 <a href="https://github.com/mattina-dev" target="_blank" rel="noopener noreferrer">
-                    <i class="mdi mdi-github" /> GitHub
+                    <i class="mdi mdi-github" aria-hidden="true" /> GitHub
                 </a>
             </div>
 
@@ -55,15 +55,15 @@
                 <summary>Prefer a messaging app?</summary>
                 <div class="secondary-row">
                     <a href="https://t.me/mattina_dev" target="_blank" rel="noopener noreferrer">
-                        <i class="mdi mdi-send" /> Telegram
+                        <i class="mdi mdi-send" aria-hidden="true" /> Telegram
                     </a>
                     <a href="https://wa.me/989057056997" target="_blank" rel="noopener noreferrer">
-                        <i class="mdi mdi-whatsapp" /> WhatsApp
+                        <i class="mdi mdi-whatsapp" aria-hidden="true" /> WhatsApp
                     </a>
                     <!-- TODO: this handle is wrong — Instagram usernames cannot contain "-".
                          Replace with your real handle, or delete this link entirely. -->
                     <a href="https://instagram.com/mattina-dev" target="_blank" rel="noopener noreferrer">
-                        <i class="mdi mdi-instagram" /> Instagram
+                        <i class="mdi mdi-instagram" aria-hidden="true" /> Instagram
                     </a>
                 </div>
             </details>
@@ -73,30 +73,34 @@
             <h2 class="mb-8">Project Inquiry / Feedback</h2>
             <div class="feedback-card">
                 <form @submit.prevent="sendEmail">
-                    <div class="input-group mb-8">
-                        <input v-model="name" type="text" id="name" placeholder="Your name" required />
+                    <div class="input-group">
+                        <label for="name">Your name</label>
+                        <input v-model="name" type="text" id="name" autocomplete="name" required />
                     </div>
 
-                    <div class="input-group mb-8">
-                        <input v-model="email" type="email" id="email" placeholder="Your email" required />
+                    <div class="input-group">
+                        <label for="email">Your email</label>
+                        <input v-model="email" type="email" id="email" autocomplete="email" required />
                     </div>
 
-                    <div class="input-group mb-8">
-                        <input v-model="subject" type="text" id="subject" placeholder="Enter subject..." required />
+                    <div class="input-group">
+                        <label for="subject">Subject</label>
+                        <input v-model="subject" type="text" id="subject" required />
                     </div>
 
-                    <div class="input-group mb-8">
-                        <textarea v-model="message" id="message" placeholder="Write your feedback..." maxlength="1200"
-                            required></textarea>
+                    <div class="input-group">
+                        <label for="message">Message</label>
+                        <textarea v-model="message" id="message" rows="5" maxlength="1200"
+                            aria-describedby="char-counter" required></textarea>
                     </div>
 
                     <input v-model="website" type="text" class="honeypot" tabindex="-1" autocomplete="off"
                         aria-hidden="true" />
-                    <p class="char-counter">{{ message.length }}/1200</p>
+                    <p class="char-counter" id="char-counter">{{ message.length }}/1200 characters</p>
 
-                    <p v-if="statusMessage" :class="['status', statusType]">{{ statusMessage }}</p>
+                    <p v-if="statusMessage" :class="['status', statusType]" role="status" aria-live="polite">{{ statusMessage }}</p>
 
-                    <button type="submit" class="btns send-btn" :disabled="isSending">
+                    <button type="submit" class="btn btn-primary send-btn" :disabled="isSending">
                         {{ isSending ? 'Sending...' : 'Send!' }}
                     </button>
                 </form>
@@ -164,143 +168,144 @@ async function sendEmail() {
 .contact-wrap {
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
-    gap: 2rem;
+    gap: var(--space-7);
     width: 100%;
-    max-width: 1180px;
+    max-width: var(--page-max);
     margin: 0 auto;
-    padding: 1.2rem;
+    padding: var(--space-7) var(--space-4);
+    align-items: start;
 }
 
-.contact-info {
-    padding: 1.4rem 1.2rem;
-}
-
-.eyebrow {
-    color: #9e6438;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.78rem;
-    font-weight: 700;
-    margin: 0;
+.contact-info h2,
+.feedback-section h2 {
+    font-size: var(--text-h1);
+    margin: var(--space-2) 0 var(--space-3);
 }
 
 .intro {
-    color: #5f3b1d;
-    line-height: 1.75;
+    color: var(--text-muted);
+    line-height: var(--leading-normal);
     max-width: 50ch;
 }
 
 /* --- Primary contact CTAs --- */
 .primary-links {
-    margin-top: 1.3rem;
+    margin-top: var(--space-5);
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: var(--space-3);
     max-width: 380px;
 }
 
 .cta {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
-    padding: 0.75rem 1rem;
-    border-radius: 12px;
+    gap: var(--space-3);
+    min-height: 44px;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius);
     text-decoration: none;
-    transition: transform 0.2s ease, filter 0.2s ease, background-color 0.2s ease;
+    border: 1px solid transparent;
+    transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+        box-shadow var(--dur) var(--ease);
 }
 
 .cta i {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     flex-shrink: 0;
 }
 
 .cta span {
     display: flex;
     flex-direction: column;
-    line-height: 1.3;
+    line-height: var(--leading-snug);
     min-width: 0;
 }
 
 .cta strong {
-    font-size: 0.98rem;
+    font-size: var(--text-body);
+    font-weight: 600;
 }
 
 .cta small {
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     opacity: 0.85;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .cta-solid {
-    background: linear-gradient(90deg, #7b440d 0%, #b57f3d 100%);
-    color: #fff8f2;
-    box-shadow: 0 6px 16px rgba(123, 68, 13, 0.2);
+    background: var(--accent);
+    color: var(--on-accent);
+    box-shadow: var(--shadow-sm);
+}
+
+.cta-solid:hover {
+    background: var(--accent-hover);
+    box-shadow: var(--shadow);
 }
 
 .cta-outline {
-    color: #6a3e1b;
-    border: 1.5px solid #e0c6a9;
-    background: rgba(255, 252, 248, 0.6);
+    color: var(--text);
+    border-color: var(--border-control);
+    background: var(--bg-elev);
 }
 
-@media (hover: hover) and (pointer: fine) {
-    .cta:hover {
-        transform: translateY(-2px);
-        filter: brightness(1.04);
-    }
-
-    .cta-outline:hover {
-        background-color: #f7ebe0;
-    }
+.cta-outline:hover {
+    background: var(--bg-subtle);
+    border-color: var(--accent);
 }
 
 .micro-note {
-    margin-top: 1rem;
-    color: #8a623d;
-    font-size: 0.9rem;
+    margin-top: var(--space-4);
+    color: var(--text-subtle);
+    font-size: var(--text-sm);
     display: flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: var(--space-1);
 }
 
 /* --- Professional profiles --- */
 .profile-links {
-    margin-top: 0.9rem;
+    margin-top: var(--space-4);
     display: flex;
     flex-wrap: wrap;
-    gap: 1.1rem;
+    gap: var(--space-5);
 }
 
 .profile-links a {
-    color: #6a3e1b;
+    color: var(--text);
     font-weight: 600;
-    font-size: 0.92rem;
+    font-size: var(--text-sm);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: var(--space-2);
+    min-height: 44px;
+    transition: color var(--dur) var(--ease);
 }
 
 .profile-links a:hover {
+    color: var(--accent);
     text-decoration: underline;
 }
 
-/* --- Secondary chat channels, collapsed by default --- */
+/* --- Secondary chat channels --- */
 .secondary-links {
-    margin-top: 1.1rem;
-    border-top: 1px solid #ecdac7;
-    padding-top: 0.8rem;
+    margin-top: var(--space-3);
+    border-top: 1px solid var(--border);
+    padding-top: var(--space-4);
 }
 
 .secondary-links summary {
     cursor: pointer;
-    font-size: 0.86rem;
-    color: #9a7455;
+    font-size: var(--text-sm);
+    color: var(--text-subtle);
     list-style: none;
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: var(--space-2);
+    min-height: 44px;
 }
 
 .secondary-links summary::-webkit-details-marker {
@@ -308,94 +313,110 @@ async function sendEmail() {
 }
 
 .secondary-links summary::before {
-    content: '＋';
-    font-size: 0.9rem;
+    content: '+';
+    font-family: var(--font-mono);
 }
 
 .secondary-links[open] summary::before {
-    content: '－';
+    content: '\2212';
 }
 
 .secondary-row {
-    margin-top: 0.6rem;
+    margin-top: var(--space-1);
     display: flex;
     flex-wrap: wrap;
-    gap: 0.9rem;
+    gap: var(--space-4);
 }
 
 .secondary-row a {
-    color: #9a7455;
-    font-size: 0.86rem;
+    color: var(--text-subtle);
+    font-size: var(--text-sm);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: var(--space-2);
+    min-height: 44px;
+    transition: color var(--dur) var(--ease);
 }
 
 .secondary-row a:hover {
+    color: var(--accent);
     text-decoration: underline;
 }
 
+/* --- Form --- */
 .feedback-card {
-    padding: 24px;
-    border-radius: 12px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    opacity: 0;
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
     width: 100%;
-    animation: fadeInUp 0.6s ease forwards;
-    border: 1px solid #e6d2bf;
-    background: linear-gradient(155deg, #fff8f2, #f4e4d5);
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    box-shadow: var(--shadow-sm);
 }
 
-.feedback-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(123, 68, 13, 0.3);
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-bottom: var(--space-4);
 }
 
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(10px);
-    }
+.input-group label {
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--text-subtle);
+}
 
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+input,
+textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: var(--text-body);
+    color: var(--text);
+    background: var(--bg);
+    /* Control boundary: --border-control clears 3:1 (WCAG 1.4.11). */
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3);
+    min-height: 44px;
+    transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+textarea {
+    resize: vertical;
+    line-height: var(--leading-normal);
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .send-btn {
-    background: linear-gradient(90deg, #7b440d 0%, #b57f3d 100%);
-    color: white;
-    font-weight: bold;
-    border-radius: 25px;
-    padding: 10px 24px;
-    border: none;
-    cursor: pointer;
-    transition: filter 0.3s ease, transform 0.3s ease;
-}
-
-.send-btn:hover {
-    filter: brightness(1.1);
-    transform: scale(1.05);
+    width: 100%;
 }
 
 .send-btn:disabled {
-    opacity: 0.7;
+    opacity: 0.6;
     cursor: not-allowed;
 }
 
 .status {
-    margin-bottom: 0.8rem;
-    font-size: 0.95rem;
+    margin-bottom: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 500;
 }
 
 .status.success {
-    color: #2e7d32;
+    color: var(--up);
 }
 
 .status.error {
-    color: #b71c1c;
+    color: var(--down);
 }
 
 .honeypot {
@@ -404,38 +425,16 @@ async function sendEmail() {
 }
 
 .char-counter {
-    font-size: 0.8rem;
-    color: #8e6641;
-    margin-bottom: 0.8rem;
-}
-
-input,
-textarea {
-    width: 100%;
-    border-bottom: #7b440d solid 1px;
-    color: #3d2816;
-}
-
-.input-group input,
-textarea {
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.input-group input:focus,
-textarea:focus {
-    border-bottom-color: #b57f3d;
-    outline: none;
+    font-size: var(--text-label);
+    color: var(--text-subtle);
+    margin-bottom: var(--space-3);
 }
 
 @media (max-width: 960px) {
     .contact-wrap {
         grid-template-columns: 1fr;
-        padding: 0.8rem;
-        gap: 1rem;
-    }
-
-    .contact-info {
-        padding: 0.4rem 0.2rem;
+        padding: 5.5rem var(--space-3) var(--space-6);
+        gap: var(--space-6);
     }
 
     .primary-links {
@@ -443,12 +442,7 @@ textarea:focus {
     }
 
     .feedback-card {
-        padding: 1rem;
-    }
-
-    .send-btn {
-        width: 100%;
-        border-radius: 12px;
+        padding: var(--space-4);
     }
 }
 </style>

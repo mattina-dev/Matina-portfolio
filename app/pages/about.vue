@@ -2,22 +2,22 @@
   <div class="resume-page">
     <header class="hero card reveal" style="--d: 0s">
       <a class="download-resume" href="/matina-safaei-resume.pdf" download>
-        <i class="mdi mdi-download-circle-outline" /> Download Resume (PDF)
+        <i class="mdi mdi-download-circle-outline" aria-hidden="true" /> Download Resume (PDF)
       </a>
-      <p class="eyebrow"><i class="mdi mdi-file-account-outline" /> Resume Overview</p>
+      <p class="eyebrow"><i class="mdi mdi-file-account-outline" aria-hidden="true" /> Resume Overview</p>
       <h1>Matina Safaei</h1>
-      <p class="role"><i class="mdi mdi-laptop" /> Frontend Engineer | Product-Minded</p>
+      <p class="role"><i class="mdi mdi-laptop" aria-hidden="true" /> Frontend Engineer | Product-Minded</p>
 
       <div class="contact-grid">
-        <a href="tel:09057056997"><i class="mdi mdi-phone" /> 09057056997</a>
-        <a href="mailto:matina.safaei@gmail.com"><i class="mdi mdi-email-outline" /> matina.safaei@gmail.com</a>
-        <a href="https://github.com/mattina-dev" target="_blank"><i class="mdi mdi-github" /> github.com/mattina-dev</a>
-        <a href="https://www.linkedin.com/in/matina-safaei" target="_blank"><i class="mdi mdi-linkedin" /> linkedin.com/in/matina-safaei</a>
+        <a href="tel:09057056997"><i class="mdi mdi-phone" aria-hidden="true" /> 09057056997</a>
+        <a href="mailto:matina.safaei@gmail.com"><i class="mdi mdi-email-outline" aria-hidden="true" /> matina.safaei@gmail.com</a>
+        <a href="https://github.com/mattina-dev" target="_blank" rel="noopener noreferrer"><i class="mdi mdi-github" aria-hidden="true" /> github.com/mattina-dev</a>
+        <a href="https://www.linkedin.com/in/matina-safaei" target="_blank" rel="noopener noreferrer"><i class="mdi mdi-linkedin" aria-hidden="true" /> linkedin.com/in/matina-safaei</a>
       </div>
     </header>
 
     <section class="card reveal" style="--d: 0.08s">
-      <h2><i class="mdi mdi-account-circle-outline" /> Profile</h2>
+      <h2><i class="mdi mdi-account-circle-outline" aria-hidden="true" /> Profile</h2>
       <p>
         Frontend Engineer with 3+ years of hands-on experience building modern web applications
         with Vue.js and TypeScript. I focus on product impact, not just implementation speed.
@@ -30,25 +30,25 @@
     </section>
 
     <section class="card reveal" style="--d: 0.16s">
-      <h2><i class="mdi mdi-tools" /> Technical Skills</h2>
+      <h2><i class="mdi mdi-tools" aria-hidden="true" /> Technical Skills</h2>
       <div class="skills-grid">
         <article>
-          <h3><i class="mdi mdi-code-tags" /> Frontend Development</h3>
+          <h3><i class="mdi mdi-code-tags" aria-hidden="true" /> Frontend Development</h3>
           <p>Vue.js, Nuxt.js, React.js, Next.js, Angular, TypeScript, JavaScript (ES6+), HTML5, CSS3</p>
         </article>
         <article>
-          <h3><i class="mdi mdi-palette-outline" /> State & UI</h3>
+          <h3><i class="mdi mdi-palette-outline" aria-hidden="true" /> State & UI</h3>
           <p>Pinia, Vuex, Vuetify, Bootstrap, Tailwind CSS</p>
         </article>
         <article>
-          <h3><i class="mdi mdi-cog-outline" /> Tools & Workflows</h3>
+          <h3><i class="mdi mdi-cog-outline" aria-hidden="true" /> Tools & Workflows</h3>
           <p>Git, REST API, GraphQL basics, Figma, Jira, Notion, Slack</p>
         </article>
       </div>
     </section>
 
     <section class="card reveal" style="--d: 0.24s">
-      <h2><i class="mdi mdi-briefcase-outline" /> Experience</h2>
+      <h2><i class="mdi mdi-briefcase-outline" aria-hidden="true" /> Experience</h2>
       <div class="timeline">
         <article class="exp">
           <h3>Frontend Developer - Eivan Online, Karaj, Iran</h3>
@@ -90,13 +90,13 @@
     </section>
 
     <section class="card reveal" style="--d: 0.32s">
-      <h2><i class="mdi mdi-school-outline" /> Education</h2>
+      <h2><i class="mdi mdi-school-outline" aria-hidden="true" /> Education</h2>
       <p><strong>B.Sc. Computer Engineering</strong> - Azad University of Karaj, Iran (2023 - Present)</p>
       <p>Relevant coursework: Web Engineering, UI/UX Design, Software Architecture</p>
     </section>
 
     <section class="card reveal" style="--d: 0.4s">
-      <h2><i class="mdi mdi-target" /> Professional Goal</h2>
+      <h2><i class="mdi mdi-target" aria-hidden="true" /> Professional Goal</h2>
       <p>
         Seeking a long-term Frontend Engineer role to deepen Vue.js and TypeScript expertise,
         contribute through the full product lifecycle from design to deployment, and grow toward
@@ -108,147 +108,34 @@
 
 <style scoped>
 .resume-page {
-  max-width: 1080px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 7rem 1rem 2.5rem;
-  color: #3f2b16;
+  padding: var(--space-8) var(--space-4) var(--space-7);
+  color: var(--text);
 }
 
 .card {
-  background: linear-gradient(145deg, #fff6ee, #f3e1d2);
-  border: 1px solid #e2cdb8;
-  border-radius: 20px;
-  box-shadow: 0 16px 30px rgba(100, 64, 30, 0.1);
-  padding: 1.4rem;
-  margin-bottom: 1rem;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
 }
 
 .reveal {
   opacity: 0;
   transform: translateY(18px);
-  animation: rise 0.65s ease forwards;
+  animation: rise 0.65s var(--ease) forwards;
   animation-delay: var(--d);
 }
 
-.hero {
-  background: radial-gradient(circle at top right, #f3cead, #fff4e8 65%);
-}
-
-.download-resume {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-bottom: 0.75rem;
-  background: #633b1c;
-  color: #fff;
-  text-decoration: none;
-  padding: 0.6rem 0.9rem;
-  border-radius: 12px;
-  font-weight: 700;
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.download-resume:hover {
-  transform: translateY(-2px);
-  background: #4b2d14;
-}
-
-.eyebrow {
-  color: #6f4a27;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-}
-
-h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin-bottom: 0.2rem;
-}
-
-.role {
-  font-size: 1.15rem;
-  color: #6f4a27;
-}
-
-h2 {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 0.7rem;
-}
-
-h3 {
-  margin-bottom: 0.4rem;
-}
-
-.contact-grid {
-  margin-top: 1rem;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.55rem;
-}
-
-.contact-grid a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.55rem 0.75rem;
-  border-radius: 12px;
-  color: #4f3115;
-  text-decoration: none;
-  background: rgba(255, 255, 255, 0.58);
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.contact-grid a:hover {
-  transform: translateY(-2px);
-  background: #fff;
-}
-
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-.skills-grid article {
-  background: rgba(255, 255, 255, 0.62);
-  border-radius: 14px;
-  padding: 0.8rem;
-}
-
-.timeline {
-  border-left: 2px solid #d2ab86;
-  padding-left: 1rem;
-}
-
-.exp {
-  position: relative;
-  margin-bottom: 1rem;
-}
-
-.exp::before {
-  content: '';
-  position: absolute;
-  left: -1.42rem;
-  top: 0.4rem;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #9c6030;
-}
-
-p {
-  line-height: 1.65;
-}
-
-.date {
-  color: #7f5432;
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-ul {
-  padding-left: 1rem;
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
 }
 
 @keyframes rise {
@@ -258,10 +145,169 @@ ul {
   }
 }
 
-@media (max-width: 900px) {
-  .contact-grid,
-  .skills-grid {
-    grid-template-columns: 1fr;
+.hero {
+  position: relative;
+  background: var(--bg-elev);
+}
+
+.hero h1 {
+  font-size: var(--text-h1);
+  margin: var(--space-2) 0;
+}
+
+.role {
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+}
+
+.download-resume {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  text-decoration: none;
+  float: right;
+  transition: background-color var(--dur) var(--ease);
+}
+
+.download-resume:hover {
+  background: var(--accent-hover);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  clear: both;
+}
+
+.contact-grid a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  transition: color var(--dur) var(--ease);
+}
+
+.contact-grid a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-h2);
+  margin: 0 0 var(--space-4);
+  color: var(--text);
+}
+
+h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-h3);
+  margin: 0 0 var(--space-1);
+  color: var(--text);
+}
+
+p {
+  color: var(--text-muted);
+  line-height: var(--leading-normal);
+  margin: 0 0 var(--space-3);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+
+.skills-grid article {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  background: var(--bg);
+}
+
+.skills-grid p {
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.exp {
+  border-left: 2px solid var(--border);
+  padding-left: var(--space-4);
+}
+
+.exp h3 {
+  font-size: 1rem;
+}
+
+.date {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0 0 var(--space-2);
+}
+
+.exp ul {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.exp li {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+strong {
+  color: var(--text);
+}
+
+@media (max-width: 720px) {
+  .resume-page {
+    padding: 5.5rem var(--space-3) var(--space-6);
+  }
+
+  .card {
+    padding: var(--space-4);
+  }
+
+  .download-resume {
+    float: none;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: var(--space-4);
   }
 }
 </style>

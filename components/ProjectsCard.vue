@@ -14,7 +14,7 @@
                 <div v-else class="project-image media-fallback">{{ initials }}</div>
 
                 <span class="status-badge" :class="isLive ? 'is-live' : 'is-private'">
-                    <i :class="isLive ? 'mdi mdi-open-in-new' : 'mdi mdi-lock-outline'" />
+                    <i :class="isLive ? 'mdi mdi-open-in-new' : 'mdi mdi-lock-outline'" aria-hidden="true" />
                     {{ isLive ? 'Live site' : 'Private / NDA' }}
                 </span>
             </div>
@@ -24,17 +24,17 @@
             <v-card-text class="text-center project-description">{{ description }}</v-card-text>
 
             <v-card-text class="text-center pa-0 chips-wrap">
-                <v-chip v-for="tech in techStack" :key="tech" class="ma-1" size="small" variant="tonal" color="#8a5a2b">
+                <v-chip v-for="tech in techStack" :key="tech" class="ma-1" size="small" variant="tonal" color="primary">
                     {{ tech }}
                 </v-chip>
             </v-card-text>
 
             <v-card-actions class="justify-center mt-auto project-actions">
-                <v-btn variant="flat" color="#7b440d" class="project-btn" @click="dialog = true">
+                <v-btn variant="flat" color="primary" class="project-btn" @click="dialog = true">
                     Read case study
                 </v-btn>
                 <v-btn v-if="isLive" :href="link" target="_blank" rel="noopener noreferrer" variant="text"
-                    color="#7b440d" class="link-btn" append-icon="mdi-open-in-new">
+                    color="primary" class="link-btn" append-icon="mdi-open-in-new">
                     {{ buttonText }}
                 </v-btn>
             </v-card-actions>
@@ -48,42 +48,41 @@
                         <h3>{{ title }}</h3>
                         <p class="case-role">{{ role }}</p>
                     </div>
-                    <v-btn icon="mdi-close" variant="text" color="#7b440d" aria-label="Close case study" @click="dialog = false" />
+                    <v-btn icon="mdi-close" variant="text" color="primary" aria-label="Close case study" @click="dialog = false" />
                 </div>
 
                 <v-card-text class="case-body">
                     <v-img v-if="image" :src="image" :alt="`${title} interface`" class="case-shot" cover />
 
                     <section>
-                        <h4><i class="mdi mdi-help-circle-outline" /> The problem</h4>
+                        <h4><i class="mdi mdi-help-circle-outline" aria-hidden="true" /> The problem</h4>
                         <p>{{ caseStudy.problem }}</p>
                     </section>
 
                     <section>
-                        <h4><i class="mdi mdi-hammer-wrench" /> What I did</h4>
+                        <h4><i class="mdi mdi-hammer-wrench" aria-hidden="true" /> What I did</h4>
                         <ul>
                             <li v-for="item in caseStudy.actions" :key="item">{{ item }}</li>
                         </ul>
                     </section>
 
                     <section>
-                        <h4><i class="mdi mdi-trending-up" /> The result</h4>
+                        <h4><i class="mdi mdi-trending-up" aria-hidden="true" /> The result</h4>
                         <p>{{ caseStudy.result }}</p>
                     </section>
 
                     <div class="case-chips">
-                        <v-chip v-for="tech in techStack" :key="tech" size="small" class="ma-1" variant="tonal"
-                            color="#8a5a2b">{{ tech }}</v-chip>
+                        <v-chip v-for="tech in techStack" :key="tech" size="small" class="ma-1" variant="tonal" color="primary">{{ tech }}</v-chip>
                     </div>
                 </v-card-text>
 
                 <v-card-actions class="case-actions">
                     <v-btn v-if="isLive" :href="link" target="_blank" rel="noopener noreferrer" variant="flat"
-                        color="#7b440d" append-icon="mdi-open-in-new">
+                        color="primary" append-icon="mdi-open-in-new">
                         {{ buttonText }}
                     </v-btn>
                     <p v-else class="nda-note">
-                        <i class="mdi mdi-lock-outline" />
+                        <i class="mdi mdi-lock-outline" aria-hidden="true" />
                         Internal product behind authentication — screenshots shared with permission, code under NDA.
                     </p>
                 </v-card-actions>
@@ -129,11 +128,21 @@ const initials = computed(() =>
 
 <style scoped>
 .card {
-    width: min(88vw, 350px);
-    height: 500px;
-    border-radius: 16px;
+    width: min(88vw, 348px);
+    height: 100%;
+    min-height: 492px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    padding: 1rem;
+    padding: var(--space-4);
+    background: var(--bg-elev) !important;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
 }
 
 .media {
@@ -141,199 +150,215 @@ const initials = computed(() =>
 }
 
 .project-image {
-    height: 170px;
-    border-radius: 12px;
+    height: 168px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
 }
 
 .media-fallback {
     height: 100%;
-    min-height: 145px;
+    min-height: 168px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 700;
-    letter-spacing: 2px;
-    color: #a9713f;
-    background: linear-gradient(140deg, #f7e7da, #e8d0ba);
-    border-radius: 12px;
+    letter-spacing: var(--track-label);
+    color: var(--accent);
+    background: var(--bg-subtle);
+    border-radius: var(--radius);
 }
 
 .status-badge {
     position: absolute;
-    top: 8px;
-    left: 8px;
+    top: var(--space-2);
+    left: var(--space-2);
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.18rem 0.55rem;
-    border-radius: 999px;
-    font-size: 0.7rem;
+    gap: var(--space-1);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-full);
+    font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.02em;
-    backdrop-filter: blur(4px);
+    border: 1px solid transparent;
+    backdrop-filter: blur(6px);
 }
 
 .status-badge.is-live {
-    background: rgba(232, 245, 233, 0.94);
-    color: #2e7d32;
+    background: var(--bg-elev);
+    border-color: var(--up);
+    color: var(--up);
 }
 
 .status-badge.is-private {
-    background: rgba(255, 248, 242, 0.94);
-    color: #8a5a2b;
+    background: var(--bg-elev);
+    border-color: var(--border-control);
+    color: var(--text-subtle);
 }
 
 .project-title {
-    min-height: 48px;
-    display: flex;
-    align-items: center;
+    min-height: 0;
+    padding: var(--space-4) 0 var(--space-2);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    letter-spacing: var(--track-heading);
+    color: var(--text);
     justify-content: center;
+    line-height: var(--leading-snug);
 }
 
 .project-description {
-    min-height: 92px;
+    min-height: 84px;
+    padding: 0 0 var(--space-3);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-muted);
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
 .chips-wrap {
-    min-height: 76px;
+    min-height: 68px;
 }
 
 .project-actions {
-    padding-top: 0.4rem;
+    padding: var(--space-3) 0 0;
     flex-wrap: wrap;
-    gap: 0.2rem;
+    gap: var(--space-1);
 }
 
 .project-btn {
     min-width: 150px;
     white-space: nowrap;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
 }
 
 .link-btn {
     white-space: nowrap;
+    text-transform: none;
+    letter-spacing: 0;
 }
 
 /* ---- Case study dialog ---- */
 .case-study {
-    background: #fffaf5;
-    border-radius: 18px;
+    background: var(--bg-elev) !important;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
 }
 
 .case-head {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 0.6rem;
-    padding: 1.1rem 1.2rem 0.4rem;
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-5) var(--space-2);
 }
 
 .case-eyebrow {
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.72rem;
+    letter-spacing: var(--track-label);
+    font-size: var(--text-label);
     font-weight: 700;
-    color: #9e6438;
+    color: var(--accent);
     margin: 0;
 }
 
 .case-head h3 {
-    margin: 0.15rem 0 0.2rem;
-    font-size: 1.5rem;
-    color: #4e2c0a;
+    margin: var(--space-1) 0 var(--space-1);
+    font-size: var(--text-h2);
+    color: var(--text);
 }
 
 .case-role {
     margin: 0;
-    color: #8a623d;
-    font-size: 0.9rem;
+    color: var(--text-subtle);
+    font-size: var(--text-sm);
 }
 
 .case-body {
-    padding-top: 0.4rem;
+    padding: var(--space-2) var(--space-5) var(--space-4);
 }
 
 .case-shot {
     width: 100%;
     max-height: 260px;
-    border-radius: 12px;
-    margin-bottom: 1.1rem;
-    border: 1px solid #ecd9c6;
+    border-radius: var(--radius);
+    margin-bottom: var(--space-5);
+    border: 1px solid var(--border);
 }
 
 .case-body section {
-    margin-bottom: 1.05rem;
+    margin-bottom: var(--space-5);
 }
 
 .case-body h4 {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.95rem;
-    color: #6b4323;
-    margin: 0 0 0.35rem;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 var(--space-2);
 }
 
 .case-body p,
 .case-body li {
-    color: #4d3a32;
-    line-height: 1.7;
-    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: var(--leading-normal);
+    font-size: var(--text-sm);
 }
 
 .case-body ul {
-    padding-left: 1.1rem;
+    padding-left: var(--space-5);
     margin: 0;
 }
 
 .case-body li {
-    margin-bottom: 0.3rem;
+    margin-bottom: var(--space-2);
 }
 
 .case-chips {
-    margin-top: 0.4rem;
+    margin-top: var(--space-2);
 }
 
 .case-actions {
-    padding: 0.4rem 1.2rem 1.1rem;
+    padding: 0 var(--space-5) var(--space-5);
 }
 
 .nda-note {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: var(--space-2);
     margin: 0;
-    color: #8a623d;
-    font-size: 0.85rem;
-    line-height: 1.5;
+    color: var(--text-subtle);
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
 }
 
 @media (max-width: 768px) {
     .card {
-        height: 470px;
-        width: min(90vw, 340px);
-        padding: 0.85rem;
+        min-height: 468px;
+        width: min(90vw, 336px);
+        padding: var(--space-3);
     }
 
-    .project-image {
-        height: 145px;
+    .project-image,
+    .media-fallback {
+        height: 144px;
+        min-height: 144px;
     }
 
-    .project-description {
-        min-height: 82px;
-    }
-
-    .chips-wrap {
-        min-height: 64px;
-    }
-
-    .case-head h3 {
-        font-size: 1.25rem;
+    .case-head,
+    .case-body,
+    .case-actions {
+        padding-inline: var(--space-4);
     }
 }
 </style>

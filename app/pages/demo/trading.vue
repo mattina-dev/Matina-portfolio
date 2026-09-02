@@ -3,7 +3,7 @@
         <div class="shell">
             <header class="demo-head">
                 <div>
-                    <NuxtLink to="/" class="back"><i class="mdi mdi-arrow-left" /> Back to portfolio</NuxtLink>
+                    <NuxtLink to="/" class="back"><i class="mdi mdi-arrow-left" aria-hidden="true" /> Back to portfolio</NuxtLink>
                     <h1>Real-Time Trading Dashboard</h1>
                     <p class="lede">
                         A live demo of the rendering approach I use for streaming market data: a feed pushing
@@ -12,7 +12,7 @@
                     </p>
                 </div>
                 <span class="sim-badge">
-                    <i class="mdi mdi-flask-outline" />
+                    <i class="mdi mdi-flask-outline" aria-hidden="true" />
                     Simulated market data — built for this portfolio
                 </span>
             </header>
@@ -44,14 +44,14 @@
                         <span>{{ coalesced ? 'Coalesced rendering' : 'Naive: render every tick' }}</span>
                     </label>
                     <button class="ghost-btn" @click="toggleFeed">
-                        <i :class="running ? 'mdi mdi-pause' : 'mdi mdi-play'" />
+                        <i :class="running ? 'mdi mdi-pause' : 'mdi mdi-play'" aria-hidden="true" />
                         {{ running ? 'Pause feed' : 'Resume feed' }}
                     </button>
                 </div>
             </section>
 
             <p class="perf-hint">
-                <i class="mdi mdi-lightbulb-on-outline" />
+                <i class="mdi mdi-lightbulb-on-outline" aria-hidden="true" />
                 Flip the switch to <strong>naive</strong> and watch <strong>DOM updates</strong> jump from a steady
                 ~8/sec to match the full tick rate — roughly <strong>{{ coalesceRatio }}× the render work for an
                     identical-looking screen</strong>, since no display can show more than 60 frames a second anyway.
@@ -69,7 +69,7 @@
                                 {{ spec.id.split('/')[0] }}
                             </button>
                         </div>
-                        <div class="live-price" :class="activeRow?.direction">
+                        <div class="live-price" :class="activeRow ? (activeRow.change >= 0 ? 'up' : 'down') : ''">
                             <span class="price">{{ activeRow ? formatPrice(activeRow.price) : '—' }}</span>
                             <span class="change">
                                 {{ activeRow && activeRow.change >= 0 ? '+' : '' }}{{ activeRow?.change.toFixed(2) }}%
@@ -168,7 +168,7 @@
                 <h2>How this is built</h2>
                 <div class="foot-grid">
                     <article>
-                        <h3><i class="mdi mdi-layers-triple-outline" /> Buffer, then flush</h3>
+                        <h3><i class="mdi mdi-layers-triple-outline" aria-hidden="true" /> Buffer, then flush</h3>
                         <p>
                             Ticks land in plain, non-reactive Maps. A single <code>requestAnimationFrame</code> loop
                             publishes one snapshot per frame, so DOM work is bounded by the display refresh rate
@@ -176,7 +176,7 @@
                         </p>
                     </article>
                     <article>
-                        <h3><i class="mdi mdi-chart-areaspline" /> Canvas over DOM</h3>
+                        <h3><i class="mdi mdi-chart-areaspline" aria-hidden="true" /> Canvas over DOM</h3>
                         <p>
                             The price series lives in a pre-allocated ring buffer and is drawn imperatively to a
                             DPR-scaled canvas. Nothing is allocated per frame, so there is no sawtooth GC pattern
@@ -184,14 +184,14 @@
                         </p>
                     </article>
                     <article>
-                        <h3><i class="mdi mdi-shield-check-outline" /> Bounded memory</h3>
+                        <h3><i class="mdi mdi-shield-check-outline" aria-hidden="true" /> Bounded memory</h3>
                         <p>
                             History is a fixed-size rolling window and the tape is capped. A dashboard left open on a
                             trading desk all day uses the same memory at hour eight as at minute one.
                         </p>
                     </article>
                     <article>
-                        <h3><i class="mdi mdi-language-typescript" /> Typed end to end</h3>
+                        <h3><i class="mdi mdi-language-typescript" aria-hidden="true" /> Typed end to end</h3>
                         <p>
                             Vue 3 + Nuxt + TypeScript, no charting library. Written for this portfolio so the code is
                             fully public — the production versions of this work sit behind client NDAs.
@@ -201,10 +201,10 @@
 
                 <div class="foot-cta">
                     <a class="btn btn-primary" href="/matina-safaei-resume.pdf" download>
-                        <i class="mdi mdi-download-outline" /> Download Resume (PDF)
+                        <i class="mdi mdi-download-outline" aria-hidden="true" /> Download Resume (PDF)
                     </a>
                     <a class="btn btn-ghost" href="mailto:matina.safaei@gmail.com">
-                        <i class="mdi mdi-email-outline" /> Email me
+                        <i class="mdi mdi-email-outline" aria-hidden="true" /> Email me
                     </a>
                 </div>
             </footer>
@@ -214,6 +214,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
+import { useColorTheme } from '~/composables/useColorTheme'
 import {
     HISTORY_SIZE,
     MarketFeed,
@@ -364,6 +365,38 @@ function resizeCanvas(): void {
     ctx?.setTransform(dpr, 0, 0, dpr, 0, 0)
 }
 
+/** Theme colours, read from CSS variables once per theme change. */
+const palette = {
+    grid: 'rgba(0,0,0,0.08)',
+    axis: '#666',
+    up: '#22c55e',
+    down: '#ef4444',
+    upFill: 'rgba(34,197,94,0.2)',
+    downFill: 'rgba(239,68,68,0.2)',
+    onAccent: '#fff',
+}
+
+function readPalette(): void {
+    const cs = getComputedStyle(document.documentElement)
+    const get = (name: string, fallback: string) => cs.getPropertyValue(name).trim() || fallback
+    palette.up = get('--up', palette.up)
+    palette.down = get('--down', palette.down)
+    palette.axis = get('--text-subtle', palette.axis)
+    palette.grid = get('--border', '#ccc')
+    palette.onAccent = get('--bg-elev', '#fff')
+    palette.upFill = hexToRgba(palette.up, 0.22)
+    palette.downFill = hexToRgba(palette.down, 0.22)
+}
+
+function hexToRgba(hex: string, alpha: number): string {
+    const m = hex.replace('#', '')
+    if (m.length !== 6) return hex
+    const r = parseInt(m.slice(0, 2), 16)
+    const g = parseInt(m.slice(2, 4), 16)
+    const b = parseInt(m.slice(4, 6), 16)
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
 function drawChart(): void {
     const state = states.get(selected.value)
     if (!ctx || !state || cssWidth === 0 || cssHeight === 0) return
@@ -394,8 +427,8 @@ function drawChart(): void {
     ctx.clearRect(0, 0, cssWidth, cssHeight)
 
     // Horizontal grid + price axis
-    ctx.strokeStyle = 'rgba(123, 68, 13, 0.08)'
-    ctx.fillStyle = 'rgba(109, 79, 51, 0.75)'
+    ctx.strokeStyle = palette.grid
+    ctx.fillStyle = palette.axis
     ctx.lineWidth = 1
     ctx.font = '11px ui-monospace, SFMono-Regular, Menlo, monospace'
     ctx.textAlign = 'left'
@@ -411,12 +444,12 @@ function drawChart(): void {
     }
 
     const rising = series[series.length - 1]! >= series[0]!
-    const stroke = rising ? '#2e7d32' : '#c0392b'
+    const stroke = rising ? palette.up : palette.down
 
     // Filled area under the line
     const gradient = ctx.createLinearGradient(0, padTop, 0, padTop + plotH)
-    gradient.addColorStop(0, rising ? 'rgba(46, 125, 50, 0.22)' : 'rgba(192, 57, 43, 0.22)')
-    gradient.addColorStop(1, 'rgba(253, 246, 240, 0)')
+    gradient.addColorStop(0, rising ? palette.upFill : palette.downFill)
+    gradient.addColorStop(1, hexToRgba(rising ? palette.up : palette.down, 0))
 
     ctx.beginPath()
     ctx.moveTo(x(0), y(series[0]!))
@@ -440,7 +473,7 @@ function drawChart(): void {
     const lastValue = series[series.length - 1]!
     const ly = y(lastValue)
     ctx.setLineDash([3, 4])
-    ctx.strokeStyle = rising ? 'rgba(46, 125, 50, 0.45)' : 'rgba(192, 57, 43, 0.45)'
+    ctx.strokeStyle = hexToRgba(rising ? palette.up : palette.down, 0.45)
     ctx.lineWidth = 1
     ctx.beginPath()
     ctx.moveTo(padLeft, ly)
@@ -464,7 +497,7 @@ function drawChart(): void {
         ctx.rect(padLeft + plotW + 4, ly - 9, labelW, 18)
     }
     ctx.fill()
-    ctx.fillStyle = '#fff'
+    ctx.fillStyle = palette.onAccent
     ctx.fillText(label, padLeft + plotW + 10, ly)
 }
 
@@ -528,9 +561,17 @@ watch(selected, () => {
     publish()
 })
 
+// Re-read colours and repaint when the theme changes.
+const { theme } = useColorTheme()
+watch(theme, () => {
+    readPalette()
+    drawChart()
+})
+
 let observer: ResizeObserver | null = null
 
 onMounted(() => {
+    readPalette()
     resizeCanvas()
     observer = new ResizeObserver(() => {
         resizeCanvas()
@@ -556,14 +597,14 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .demo {
-    background: #fdf6f0;
-    color: #3f2b16;
+    background: var(--bg);
+    color: var(--text);
     min-height: 100vh;
-    padding: 1.5rem 1rem 3rem;
+    padding: var(--space-6) var(--space-4) var(--space-8);
 }
 
 .shell {
-    max-width: 1180px;
+    max-width: var(--page-max);
     margin: 0 auto;
 }
 
@@ -572,49 +613,52 @@ onBeforeUnmount(() => {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 1rem;
+    gap: var(--space-4);
     flex-wrap: wrap;
-    margin-bottom: 1.2rem;
+    margin-bottom: var(--space-5);
 }
 
 .back {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    color: #9a6740;
+    gap: var(--space-1);
+    min-height: 40px;
+    color: var(--text-muted);
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     font-weight: 600;
+    transition: color var(--dur) var(--ease);
 }
 
 .back:hover {
+    color: var(--accent);
     text-decoration: underline;
 }
 
 .demo-head h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    margin: 0.4rem 0 0.5rem;
-    color: #4e2c0a;
+    font-size: var(--text-h1);
+    margin: var(--space-2) 0 var(--space-3);
 }
 
 .lede {
     max-width: 62ch;
-    line-height: 1.7;
-    color: #6f5341;
+    line-height: var(--leading-normal);
+    color: var(--text-muted);
     margin: 0;
 }
 
 .sim-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    background: #fff3e2;
-    border: 1px solid #e6cbaa;
-    color: #8a5a2b;
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 0.4rem 0.75rem;
-    border-radius: 999px;
+    gap: var(--space-2);
+    background: var(--bg-elev);
+    border: 1px solid var(--border-control);
+    color: var(--text-muted);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-full);
     white-space: nowrap;
 }
 
@@ -623,45 +667,46 @@ onBeforeUnmount(() => {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1.4rem;
-    padding: 0.9rem 1.1rem;
-    border: 1px solid #e6d2bf;
-    border-radius: 14px;
-    background: linear-gradient(155deg, #fff8f2, #f6e8da);
+    gap: var(--space-5);
+    padding: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elev);
 }
 
 .stat {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
-    min-width: 96px;
+    gap: 2px;
+    min-width: 100px;
 }
 
 .stat-label {
-    font-size: 0.72rem;
+    font-size: var(--text-label);
     text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: #9a7455;
-    font-weight: 700;
+    letter-spacing: var(--track-label);
+    color: var(--text-subtle);
+    font-weight: 600;
 }
 
 .stat-value {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
     font-size: 1.25rem;
     font-weight: 700;
-    color: #4e2c0a;
+    color: var(--text);
 }
 
 .stat-value small {
-    font-size: 0.72rem;
-    font-weight: 600;
-    opacity: 0.7;
+    font-size: var(--text-label);
+    font-weight: 500;
+    color: var(--text-subtle);
 }
 
 .perf-controls {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: var(--space-2);
     margin-left: auto;
     flex-wrap: wrap;
 }
@@ -669,70 +714,81 @@ onBeforeUnmount(() => {
 .switch {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    font-size: 0.85rem;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
     font-weight: 600;
-    color: #6a3e1b;
+    color: var(--text);
     cursor: pointer;
-    padding: 0.42rem 0.8rem;
-    border-radius: 999px;
-    border: 1.5px solid #dcbf9f;
-    background: #fffaf5;
+    min-height: 44px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-control);
+    background: var(--bg);
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 
 .switch.danger {
-    border-color: #e0a89e;
-    background: #fdeeeb;
-    color: #a83226;
+    border-color: var(--down);
+    color: var(--down);
 }
 
 .switch input {
-    accent-color: #7b440d;
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
 }
 
 .ghost-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.42rem 0.85rem;
-    border-radius: 999px;
-    border: 1.5px solid #dcbf9f;
-    background: #fffaf5;
-    color: #6a3e1b;
+    gap: var(--space-2);
+    min-height: 44px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-control);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     cursor: pointer;
+    transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 
 .ghost-btn:hover {
-    background: #f7ebe0;
+    background: var(--bg-subtle);
+    border-color: var(--accent);
 }
 
 .perf-hint {
-    margin: 0.8rem 0 1.2rem;
-    color: #6f5341;
-    font-size: 0.9rem;
-    line-height: 1.65;
+    margin: var(--space-4) 0 var(--space-5);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
     max-width: 88ch;
 }
 
 .perf-hint i {
-    margin-right: 0.3rem;
-    color: #b57f18;
+    margin-right: var(--space-1);
+    color: var(--warn);
+}
+
+.perf-hint strong {
+    color: var(--text);
 }
 
 /* ---- Grid ---- */
 .grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 1rem;
+    gap: var(--space-4);
 }
 
 .panel {
-    border: 1px solid #e6d2bf;
-    border-radius: 14px;
-    background: #fffaf5;
-    padding: 0.9rem 1rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elev);
+    padding: var(--space-4);
     overflow: hidden;
 }
 
@@ -745,74 +801,99 @@ onBeforeUnmount(() => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.6rem;
-    margin-bottom: 0.7rem;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
     flex-wrap: wrap;
 }
 
 .panel-head h2 {
-    font-size: 1rem;
+    font-size: var(--text-h3);
     margin: 0;
-    color: #4e2c0a;
 }
 
 .panel-foot {
-    margin: 0.6rem 0 0;
-    font-size: 0.78rem;
-    color: #9a7455;
-    line-height: 1.55;
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-label);
+    color: var(--text-subtle);
+    line-height: var(--leading-snug);
 }
 
 .panel-foot code,
 .foot-grid code {
-    background: #f4e4d5;
-    padding: 0.05rem 0.3rem;
-    border-radius: 4px;
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    padding: 1px var(--space-1);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
     font-size: 0.92em;
 }
 
 .muted {
-    color: #9a7455;
+    color: var(--text-subtle);
+    font-size: var(--text-sm);
 }
 
 /* ---- Chart ---- */
 .symbol-tabs {
     display: flex;
-    gap: 0.3rem;
+    gap: var(--space-1);
     flex-wrap: wrap;
 }
 
 .tab {
-    border: 1px solid transparent;
-    background: #f4e4d5;
-    color: #7a4a2f;
-    font-weight: 700;
-    font-size: 0.78rem;
-    padding: 0.28rem 0.6rem;
-    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: var(--text-label);
+    letter-spacing: 0.02em;
+    min-height: 32px;
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-full);
     cursor: pointer;
+    transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease),
+        border-color var(--dur) var(--ease);
+}
+
+.tab:hover {
+    border-color: var(--accent);
+    color: var(--text);
 }
 
 .tab.active {
-    background: #7b440d;
-    color: #fff8f2;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
 }
 
 .live-price {
     display: flex;
     align-items: baseline;
-    gap: 0.5rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
 }
 
 .live-price .price {
-    font-size: 1.45rem;
+    font-size: 1.5rem;
     font-weight: 700;
+    color: var(--text);
 }
 
 .live-price .change {
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     font-weight: 700;
+}
+
+.live-price.up .price,
+.live-price.up .change {
+    color: var(--up);
+}
+
+.live-price.down .price,
+.live-price.down .change {
+    color: var(--down);
 }
 
 .chart-wrap {
@@ -830,32 +911,33 @@ onBeforeUnmount(() => {
 .book {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
+    gap: 1px;
 }
 
 .book-row {
     position: relative;
     display: flex;
     justify-content: space-between;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.78rem;
-    padding: 0.14rem 0.35rem;
-    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: var(--text-label);
+    padding: 3px var(--space-2);
+    border-radius: var(--radius-sm);
 }
 
 .book-row .depth {
     position: absolute;
     inset: 0 auto 0 0;
-    border-radius: 3px;
+    border-radius: var(--radius-sm);
     opacity: 0.16;
 }
 
 .book-row.ask .depth {
-    background: #c0392b;
+    background: var(--down);
 }
 
 .book-row.bid .depth {
-    background: #2e7d32;
+    background: var(--up);
 }
 
 .book-row .bp,
@@ -864,28 +946,33 @@ onBeforeUnmount(() => {
 }
 
 .book-row.ask .bp {
-    color: #c0392b;
+    color: var(--down);
 }
 
 .book-row.bid .bp {
-    color: #2e7d32;
+    color: var(--up);
+}
+
+.book-row .bs {
+    color: var(--text-muted);
 }
 
 .book-mid {
     display: flex;
     align-items: baseline;
-    gap: 0.4rem;
-    padding: 0.35rem;
-    margin: 0.25rem 0;
-    border-top: 1px solid #ecdac7;
-    border-bottom: 1px solid #ecdac7;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    margin: var(--space-1) 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
     font-weight: 700;
-    color: #4e2c0a;
+    color: var(--text);
 }
 
 .book-mid small {
-    color: #9a7455;
+    color: var(--text-subtle);
     font-weight: 500;
 }
 
@@ -893,41 +980,43 @@ onBeforeUnmount(() => {
 .watchlist {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
 }
 
 .watchlist th {
     text-align: left;
-    font-size: 0.7rem;
+    font-size: var(--text-label);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #9a7455;
-    padding-bottom: 0.35rem;
-    border-bottom: 1px solid #ecdac7;
-    font-weight: 700;
+    letter-spacing: var(--track-label);
+    color: var(--text-subtle);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
 }
 
 .watchlist td {
-    padding: 0.4rem 0;
-    border-bottom: 1px solid #f4e8dc;
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
 }
 
 .watchlist tbody tr {
     cursor: pointer;
+    transition: background-color var(--dur-fast) var(--ease);
 }
 
 .watchlist tbody tr:hover {
-    background: #f9efe5;
+    background: var(--bg-subtle);
 }
 
 .watchlist tr.selected {
-    background: #f4e4d5;
+    background: var(--accent-soft);
 }
 
 .watchlist td small {
     display: block;
-    color: #9a7455;
-    font-size: 0.72rem;
+    color: var(--text-subtle);
+    font-size: var(--text-label);
 }
 
 .num {
@@ -935,19 +1024,20 @@ onBeforeUnmount(() => {
 }
 
 .mono {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
 }
 
 .up {
-    color: #2e7d32;
+    color: var(--up);
 }
 
 .down {
-    color: #c0392b;
+    color: var(--down);
 }
 
 .warn {
-    color: #b57f18;
+    color: var(--warn);
 }
 
 /* ---- Tape ---- */
@@ -957,107 +1047,87 @@ onBeforeUnmount(() => {
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
+    gap: 1px;
 }
 
 .tape li {
     display: grid;
     grid-template-columns: 1fr 1.2fr 1fr auto;
-    gap: 0.4rem;
+    gap: var(--space-2);
     align-items: center;
-    font-size: 0.78rem;
-    padding: 0.2rem 0.35rem;
-    border-radius: 3px;
+    font-size: var(--text-label);
+    padding: 3px var(--space-2);
+    border-radius: var(--radius-sm);
+    color: var(--text);
 }
 
 .tape li.buy {
-    background: rgba(46, 125, 50, 0.08);
+    background: color-mix(in srgb, var(--up) 12%, transparent);
 }
 
 .tape li.sell {
-    background: rgba(192, 57, 43, 0.08);
+    background: color-mix(in srgb, var(--down) 12%, transparent);
 }
 
 .tape .tag {
-    font-size: 0.62rem;
+    font-size: 0.625rem;
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 0.05em;
 }
 
 .tape li.buy .tag {
-    color: #2e7d32;
+    color: var(--up);
 }
 
 .tape li.sell .tag {
-    color: #c0392b;
+    color: var(--down);
 }
 
 /* ---- Footer ---- */
 .demo-foot {
-    margin-top: 1.6rem;
-    padding: 1.3rem;
-    border: 1px solid #e6d2bf;
-    border-radius: 16px;
-    background: linear-gradient(155deg, #fff8f2, #f6e8da);
+    margin-top: var(--space-6);
+    padding: var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    background: var(--bg-elev);
 }
 
 .demo-foot h2 {
-    margin: 0 0 0.9rem;
-    font-size: 1.2rem;
-    color: #4e2c0a;
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-h2);
 }
 
 .foot-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 1rem;
+    gap: var(--space-5);
 }
 
 .foot-grid h3 {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.95rem;
-    margin: 0 0 0.35rem;
-    color: #6b4323;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin: 0 0 var(--space-2);
+    color: var(--accent);
 }
 
 .foot-grid p {
     margin: 0;
-    font-size: 0.88rem;
-    line-height: 1.65;
-    color: #6f5341;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-muted);
 }
 
 .foot-cta {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-top: 1.3rem;
-    padding-top: 1.1rem;
-    border-top: 1px solid #ecdac7;
-}
-
-.btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.65rem 1.15rem;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-decoration: none;
-}
-
-.btn-primary {
-    background: linear-gradient(90deg, #7b440d 0%, #b57f3d 100%);
-    color: #fff8f2;
-}
-
-.btn-ghost {
-    border: 1.5px solid #c9a179;
-    color: #7b440d;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
 }
 
 /* ---- Responsive ---- */
@@ -1069,20 +1139,20 @@ onBeforeUnmount(() => {
 
 @media (max-width: 640px) {
     .demo {
-        padding: 1rem 0.7rem 2.4rem;
+        padding: var(--space-4) var(--space-3) var(--space-7);
     }
 
     .perf {
-        gap: 0.9rem 1.1rem;
-        padding: 0.8rem;
+        gap: var(--space-4);
+        padding: var(--space-3);
     }
 
     .stat {
-        min-width: 78px;
+        min-width: 84px;
     }
 
     .stat-value {
-        font-size: 1.05rem;
+        font-size: 1.0625rem;
     }
 
     .perf-controls {

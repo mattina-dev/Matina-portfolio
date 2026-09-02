@@ -1,30 +1,32 @@
 <template>
     <header :class="['site-header', { scrolled: isScrolled }]">
-        <nav class="nav-container">
+        <nav class="nav-container" aria-label="Main">
             <div class="logo">
                 <a href="/" @click.prevent="handleLogoClick">Matina<span>Safaei</span></a>
             </div>
 
             <ul class="nav-links">
-                <li :class="{ active: isHome && props.currentIndex === 1 }"><a @click.prevent="navigate(1)">About</a>
+                <li v-for="item in sections" :key="item.label"
+                    :class="{ active: isHome && props.currentIndex === item.index }">
+                    <a href="/" :aria-current="isHome && props.currentIndex === item.index ? 'true' : undefined"
+                        @click.prevent="navigate(item.index)">{{ item.label }}</a>
                 </li>
-                <li :class="{ active: isHome && props.currentIndex === 2 }"><a @click.prevent="navigate(2)">Projects</a>
-                </li>
-                <li :class="{ active: isHome && props.currentIndex === 3 }"><a @click.prevent="navigate(3)">Services</a>
-                </li>
-                <li :class="{ active: isHome && props.currentIndex === 4 }"><a
-                        @click.prevent="navigate(4)">Experience</a></li>
-                <li :class="{ active: isHome && props.currentIndex === 5 }"><a @click.prevent="navigate(5)">Contact</a>
-                </li>
-                <li :class="{ active: route.path === '/demo/trading' }">
-                    <NuxtLink to="/demo/trading">Live Demo</NuxtLink>
+                <li :class="{ active: isDemoRoute }">
+                    <NuxtLink to="/demo/trading" :aria-current="isDemoRoute ? 'page' : undefined">Live Demo</NuxtLink>
                 </li>
             </ul>
 
-            <a class="resume-btn" href="/matina-safaei-resume.pdf" download>
-                <i class="mdi mdi-download-outline" />
-                <span>Resume</span>
-            </a>
+            <div class="nav-actions">
+                <button type="button" class="icon-btn" :aria-label="`Switch to ${isDark ? 'light' : 'dark'} theme`"
+                    :aria-pressed="isDark" @click="toggle">
+                    <i :class="isDark ? 'mdi mdi-weather-night' : 'mdi mdi-weather-sunny'" aria-hidden="true" />
+                </button>
+
+                <a class="resume-btn" href="/matina-safaei-resume.pdf" download>
+                    <i class="mdi mdi-download-outline" aria-hidden="true" />
+                    <span class="resume-label">Resume</span>
+                </a>
+            </div>
         </nav>
     </header>
 </template>
@@ -32,13 +34,22 @@
 <script setup>
 import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from '#app'
+import { useColorTheme } from '~/composables/useColorTheme'
+
+const sections = [
+    { label: 'About', index: 1 },
+    { label: 'Projects', index: 2 },
+    { label: 'Services', index: 3 },
+    { label: 'Experience', index: 4 },
+    { label: 'Contact', index: 5 },
+]
 
 const isScrolled = ref(false)
 const route = useRoute()
 const router = useRouter()
+const { isDark, toggle } = useColorTheme()
 
 const handleScroll = () => {
-    // optional if you ever use native scroll
     isScrolled.value = window.scrollY > 30
 }
 const props = defineProps({
@@ -47,6 +58,7 @@ const props = defineProps({
 })
 
 const isHome = computed(() => route.path === '/')
+const isDemoRoute = computed(() => route.path === '/demo/trading')
 
 const handleLogoClick = async () => {
     if (isHome.value) {
@@ -72,166 +84,196 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 <style scoped>
 .site-header {
     position: fixed;
-    top: 12px;
+    top: var(--space-3);
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    width: min(92%, 980px);
+    background: color-mix(in srgb, var(--bg-elev) 88%, transparent);
+    width: min(94%, 1060px);
     z-index: 2000;
-    backdrop-filter: blur(8px);
-    transition: all 0.4s ease;
-    border-radius: 50px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--dur) var(--ease), background-color var(--dur) var(--ease);
 }
 
 .site-header.scrolled {
-    /* background: rgba(253, 246, 240, 0.95); */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 0.4rem 0;
+    box-shadow: var(--shadow);
 }
 
 .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.9rem 1.4rem;
-
+    gap: var(--space-4);
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-5);
     width: 100%;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .logo a {
-    font-size: 1.4rem;
+    font-size: 1.0625rem;
     font-weight: 700;
-    color: #945034;
+    letter-spacing: var(--track-heading);
+    color: var(--accent);
     text-decoration: none;
-    transition: color 0.3s ease;
-    cursor: pointer;
+    white-space: nowrap;
+    transition: color var(--dur) var(--ease);
 }
 
 .logo span {
-    color: #5b2b1a;
+    color: var(--text);
 }
 
 .logo a:hover {
-    color: #5b2b1a;
+    color: var(--accent-hover);
 }
 
 .nav-links {
     display: flex;
-    gap: 1.2rem;
+    gap: var(--space-5);
     list-style: none;
-    margin: 0 auto 0 2rem;
+    margin: 0 auto;
     padding: 0;
+}
+
+.nav-links a,
+.nav-links :deep(a) {
+    position: relative;
+    display: inline-block;
+    padding: var(--space-2) 0;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    white-space: nowrap;
+    transition: color var(--dur) var(--ease);
+}
+
+.nav-links a::after,
+.nav-links :deep(a)::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--accent);
+    transition: width var(--dur) var(--ease);
+}
+
+.nav-links a:hover,
+.nav-links :deep(a):hover {
+    color: var(--text);
+}
+
+.nav-links a:hover::after,
+.nav-links :deep(a):hover::after {
+    width: 100%;
+}
+
+.nav-links li.active a,
+.nav-links li.active :deep(a) {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.nav-links li.active a::after,
+.nav-links li.active :deep(a)::after {
+    width: 100%;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+}
+
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 1.15rem;
+    cursor: pointer;
+    transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.icon-btn:hover {
+    background: var(--bg-subtle);
+    color: var(--accent);
 }
 
 .resume-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.42rem 0.95rem;
-    border-radius: 999px;
-    background: linear-gradient(90deg, #7b440d 0%, #b57f3d 100%);
-    color: #fff8f2;
-    font-weight: 700;
-    font-size: 0.86rem;
+    gap: var(--space-2);
+    min-height: 40px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-full);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+    font-size: var(--text-sm);
     text-decoration: none;
     white-space: nowrap;
-    flex-shrink: 0;
-    transition: filter 0.25s ease, transform 0.25s ease;
+    transition: background-color var(--dur) var(--ease);
 }
 
-@media (hover: hover) and (pointer: fine) {
-    .resume-btn:hover {
-        filter: brightness(1.08);
-        transform: translateY(-1px);
-    }
-}
-
-.nav-links a,
-.nav-links :deep(a) {
-    color: #7a4a2f;
-    text-decoration: none;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    position: relative;
-    transition: color 0.3s ease;
-    cursor: pointer;
-}
-
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0%;
-    height: 2px;
-    background-color: #945034;
-    transition: width 0.3s ease;
-}
-
-.nav-links a:hover::after {
-    width: 100%;
-}
-
-.nav-links a:hover {
-    color: #945034;
-}
-
-.nav-links li.active a {
-    color: #945034;
-    font-weight: 700;
-}
-
-.nav-links li.active a::after {
-    width: 100%;
+.resume-btn:hover {
+    background: var(--accent-hover);
 }
 
 @media (max-width: 900px) {
     .site-header {
-        top: 8px;
-        border-radius: 18px;
+        top: var(--space-2);
+        width: 96%;
+        border-radius: var(--radius-lg);
     }
 
     .nav-container {
-        padding: 0.65rem 0.8rem;
-        gap: 0.8rem;
+        padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+        gap: var(--space-2);
     }
 
     .logo a {
-        font-size: 1rem;
+        font-size: 0.9375rem;
     }
 
     .nav-links {
-        margin: 0 0.5rem;
-        gap: 0.7rem;
+        margin: 0;
+        gap: var(--space-4);
         overflow-x: auto;
         white-space: nowrap;
         scrollbar-width: none;
-    }
-
-    .resume-btn {
-        padding: 0.36rem 0.7rem;
-        font-size: 0.78rem;
-    }
-
-    .resume-btn span {
-        display: none;
-    }
-
-    .resume-btn::after {
-        content: 'CV';
+        min-width: 0;
     }
 
     .nav-links::-webkit-scrollbar {
         display: none;
     }
 
-    .nav-links a {
-        font-size: 0.88rem;
+    .nav-links a,
+    .nav-links :deep(a) {
+        font-size: 0.8125rem;
+    }
+
+    .resume-btn {
+        padding: 0 var(--space-3);
+    }
+
+    .resume-label {
+        font-size: 0.8125rem;
     }
 }
 </style>

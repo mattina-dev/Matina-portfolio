@@ -10,7 +10,7 @@
             trading dashboards and admin panels.
           </p>
           <a class="footer-cta" href="/matina-safaei-resume.pdf" download>
-            <i class="mdi mdi-download-outline" /> Download Resume (PDF)
+            <i class="mdi mdi-download-outline" aria-hidden="true" /> Download Resume (PDF)
           </a>
         </section>
 
@@ -51,93 +51,125 @@ const year = new Date().getFullYear()
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top right, #f7e7da, #fdf6f0 62%);
-  color: #4c3118;
+  padding: var(--space-6) var(--space-4);
+  background: var(--bg);
+  color: var(--text);
 }
 
 .footer-shell {
-  width: min(100%, 1080px);
-  padding: 2.4rem 1.2rem;
-  border: 1px solid #e3cdb7;
-  border-radius: 20px;
-  background: rgba(255, 252, 248, 0.82);
-  box-shadow: 0 16px 32px rgba(108, 73, 44, 0.12);
+  width: min(100%, var(--page-max));
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--bg-elev);
+  box-shadow: var(--shadow-sm);
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
-  gap: 1.4rem;
-}
-
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #9a6740;
-  font-weight: 700;
-  font-size: 0.78rem;
-  margin-bottom: 0.35rem;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: var(--space-6);
 }
 
 h3 {
-  margin: 0 0 0.6rem;
-  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  margin: var(--space-1) 0 var(--space-3);
+  font-size: var(--text-h2);
 }
 
 h4 {
-  margin: 0 0 0.55rem;
-  color: #6b4323;
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-subtle);
 }
 
 .muted {
-  color: #705034;
-  line-height: 1.7;
-  max-width: 45ch;
+  color: var(--text-muted);
+  line-height: var(--leading-normal);
+  max-width: 46ch;
+  font-size: var(--text-sm);
+}
+
+.footer-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: background-color var(--dur) var(--ease);
+}
+
+.footer-cta:hover {
+  background: var(--accent-hover);
+  text-decoration: none;
 }
 
 .links {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: var(--space-1);
 }
 
-a {
-  color: #4a2f18;
+.links a,
+.links :deep(a) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
   text-decoration: none;
+  transition: color var(--dur) var(--ease);
 }
 
-a:hover {
+.links a:hover,
+.links :deep(a):hover {
+  color: var(--accent);
   text-decoration: underline;
 }
 
 .bottom-row {
-  margin-top: 1.5rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid #ead8c6;
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
-  gap: 0.9rem;
-  color: #7d5a3c;
-  font-size: 0.88rem;
+  gap: var(--space-3);
+  color: var(--text-subtle);
+  font-size: var(--text-sm);
+}
+
+.bottom-row p {
+  margin: 0;
 }
 
 @media (max-width: 860px) {
   .site-footer {
     min-height: auto;
-    padding: 1rem 0;
+    padding: var(--space-6) var(--space-3);
   }
 
   .footer-shell {
-    padding: 1.2rem 0.9rem;
-    border-radius: 14px;
+    padding: var(--space-5) var(--space-4);
+    border-radius: var(--radius-lg);
   }
 
   .footer-grid {
     grid-template-columns: 1fr;
+    gap: var(--space-5);
   }
 
   .bottom-row {
     flex-direction: column;
+    gap: var(--space-1);
   }
 }
 </style>

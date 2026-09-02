@@ -1,25 +1,40 @@
 <template>
     <div class="base">
         <div class="section-head">
-            <h1 class="mt-8 mb-0">Selected Work</h1>
+            <p class="eyebrow">Selected work</p>
+            <h2>Real-time dashboards &amp; data-heavy interfaces</h2>
             <p class="section-sub">
-                Real-time dashboards, admin panels and data-heavy interfaces.
                 Every card opens a short case study: the problem, what I built, and what changed.
             </p>
         </div>
 
-        <div class="carousel">
-            <div class="carousel-track" ref="track" :style="{ transform: `translateX(${position}px)` }">
-                <ProjectsCard v-for="(project, index) in duplicatedProjects" :key="index" :image="project.image"
-                    :title="project.title" :role="project.role" :description="project.description"
-                    :techStack="project.techStack" :buttonText="project.buttonText" :link="project.link"
-                    :caseStudy="project.caseStudy" @mouseenter="pause = true" @mouseleave="pause = false"
-                    @modal="modalOpen = $event" />
+        <div class="carousel-shell">
+            <div class="carousel" @mouseenter="hovering = true" @mouseleave="hovering = false">
+                <ul class="carousel-track" ref="track" :style="{ transform: `translateX(${position}px)` }">
+                    <!-- Copies 2 and 3 exist only to make the loop seamless. `inert`
+                         keeps them out of the tab order and the accessibility tree,
+                         so keyboard users don't traverse the same cards three times. -->
+                    <li v-for="(project, index) in duplicatedProjects" :key="index"
+                        :inert="index >= projects.length || undefined">
+                        <ProjectsCard :image="project.image" :title="project.title" :role="project.role"
+                            :description="project.description" :techStack="project.techStack"
+                            :buttonText="project.buttonText" :link="project.link" :caseStudy="project.caseStudy"
+                            @modal="modalOpen = $event" />
+                    </li>
+                </ul>
             </div>
+
+            <!-- WCAG 2.2.2: moving content needs a keyboard-operable stop control. -->
+            <button type="button" class="marquee-toggle" :aria-pressed="userPaused"
+                :aria-label="userPaused ? 'Resume project carousel' : 'Pause project carousel'"
+                @click="userPaused = !userPaused">
+                <i :class="userPaused ? 'mdi mdi-play' : 'mdi mdi-pause'" aria-hidden="true" />
+                <span>{{ userPaused ? 'Play' : 'Pause' }}</span>
+            </button>
         </div>
 
         <NuxtLink to="/demo/trading" class="demo-cta">
-            <i class="mdi mdi-chart-line" />
+            <i class="mdi mdi-chart-line" aria-hidden="true" />
             Or skip the reading — open the live real-time dashboard demo
         </NuxtLink>
     </div>
@@ -159,19 +174,24 @@ const duplicatedProjects = [...projects, ...projects, ...projects]
 const track = ref(null)
 const hovering = ref(false)
 const modalOpen = ref(false)
-const pause = computed({
-    get: () => hovering.value || modalOpen.value,
-    set: (value) => (hovering.value = value),
-})
+const userPaused = ref(false)
+const reduceMotion = ref(false)
+
+// Motion stops for any of: an explicit stop, hover, an open dialog, or the
+// user's reduced-motion preference.
+const paused = computed(
+    () => userPaused.value || hovering.value || modalOpen.value || reduceMotion.value
+)
+
 const speed = 0.7
 let animationFrame = null
 const position = ref(0)
 let trackWidth = 0
 
 function animate() {
-    if (!pause.value && track.value) {
+    if (!paused.value && track.value) {
         position.value -= speed
-        // وقتی به نصف track رسیدیم، position را دوباره جلو می‌بریم تا پرش دیده نشود
+        // Jump forward by one copy's width once we pass it, so the loop is seamless.
         if (Math.abs(position.value) >= trackWidth / 3) {
             position.value += trackWidth / 3
         }
@@ -179,26 +199,38 @@ function animate() {
     animationFrame = requestAnimationFrame(animate)
 }
 
+let motionQuery = null
+const onMotionChange = (e) => {
+    reduceMotion.value = e.matches
+    if (e.matches) userPaused.value = true
+}
+
 onMounted(() => {
+    motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    reduceMotion.value = motionQuery.matches
+    // Reduced motion: start stopped, and let the control opt back in.
+    if (motionQuery.matches) userPaused.value = true
+    motionQuery.addEventListener('change', onMotionChange)
+
     trackWidth = track.value.scrollWidth
     animationFrame = requestAnimationFrame(animate)
 })
 
 onBeforeUnmount(() => {
+    motionQuery?.removeEventListener('change', onMotionChange)
     cancelAnimationFrame(animationFrame)
 })
 </script>
 
 <style scoped>
 .base {
-    background-color: #fdf6f0;
+    background-color: var(--bg);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1rem 0 1.2rem;
-    /* As a flex item this box would otherwise size to the carousel track's
-       max-content width and push its siblings past the viewport edge. */
+    gap: var(--space-5);
+    padding: var(--space-7) 0 var(--space-6);
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
@@ -206,70 +238,110 @@ onBeforeUnmount(() => {
 
 .section-head {
     text-align: center;
-    padding: 0 1rem;
+    padding: 0 var(--space-4);
     width: 100%;
     box-sizing: border-box;
 }
 
+.section-head h2 {
+    font-size: var(--text-h1);
+    margin: var(--space-2) 0 var(--space-3);
+}
+
 .section-sub {
     max-width: min(60ch, 100%);
-    margin: 0.5rem auto 0;
-    color: #6f5341;
-    line-height: 1.65;
+    margin: 0 auto;
+    color: var(--text-muted);
+    line-height: var(--leading-normal);
+}
+
+.carousel-shell {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
 }
 
 .carousel {
     overflow: hidden;
     width: 100%;
-    height: 540px;
 }
 
 .carousel-track {
     display: flex;
-    gap: 24px;
+    gap: var(--space-4);
     width: max-content;
+    list-style: none;
+    margin: 0;
+    padding: var(--space-2) 0;
     will-change: transform;
+}
+
+.marquee-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: 36px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-control);
+    background: var(--bg-elev);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+        background-color var(--dur) var(--ease);
+}
+
+.marquee-toggle:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--bg-subtle);
 }
 
 .demo-cta {
     max-width: min(52ch, calc(100% - 2rem));
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    color: #7a4a2f;
+    gap: var(--space-2);
+    color: var(--accent);
     font-weight: 600;
+    font-size: var(--text-sm);
     text-decoration: none;
-    border-bottom: 1px solid #d9bfa6;
+    border-bottom: 1px solid var(--border-control);
     padding-bottom: 2px;
-    transition: color 0.25s ease, border-color 0.25s ease;
+    transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 
 .demo-cta:hover {
-    color: #945034;
-    border-color: #945034;
+    color: var(--accent-hover);
+    border-color: var(--accent);
 }
 
 @media (max-width: 900px) {
     .base {
-        padding-top: 4.6rem;
+        padding-top: 5.5rem;
+        gap: var(--space-4);
     }
 
     .section-sub {
-        font-size: 0.92rem;
-    }
-
-    .carousel {
-        height: 510px;
+        font-size: var(--text-sm);
     }
 
     .carousel-track {
-        gap: 14px;
+        gap: var(--space-3);
     }
 
     .demo-cta {
-        font-size: 0.88rem;
         text-align: center;
-        line-height: 1.5;
+        line-height: var(--leading-snug);
     }
 }
 </style>

@@ -5,7 +5,7 @@
             <h1>Professional Services</h1>
         </div>
         <div class="services-grid">
-            <ServicesCard v-for="service in services" :key="service.title" :image="service.image" :title="service.title"
+            <ServicesCard v-for="service in services" :key="service.title" :icon="service.icon" :title="service.title"
                 :description="service.description" />
         </div>
     </section>
@@ -17,17 +17,17 @@ import ServicesCard from "../components/ServicesCard.vue"
 
 const services = [
     {
-        image: 'icons/code.png',
+        icon: 'mdi-code-tags',
         title: 'Frontend Engineering',
         description: 'Scalable, maintainable interfaces with Vue.js, Nuxt, and TypeScript.',
     },
     {
-        image: 'icons/design.png',
+        icon: 'mdi-palette-outline',
         title: 'UI/UX Implementation',
         description: 'Design-first implementation focused on usability, accessibility, and polish.',
     },
     {
-        image: 'icons/develop.png',
+        icon: 'mdi-account-group-outline',
         title: 'Product Collaboration',
         description: 'Delivery with product context, fast iteration, and clear user impact.',
     },
@@ -35,40 +35,34 @@ const services = [
 </script>
 <style scoped>
 .services {
-    background-color: #fdf6f0;
+    background-color: var(--bg);
     width: 100%;
-    padding: 3rem 1rem;
+    padding: var(--space-8) var(--space-4);
 }
 
 .services-head {
     text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.eyebrow {
-    margin: 0;
-    color: #a56d43;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-size: 0.78rem;
-    font-weight: 700;
+    margin-bottom: var(--space-6);
 }
 
 h1 {
-    margin: 0.35rem 0 0;
-    color: #4e2c0a;
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-h1);
 }
 
 .services-grid {
-    max-width: 1180px;
+    max-width: var(--page-max);
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+    gap: var(--space-4);
 }
 
 @media (max-width: 960px) {
+    .services {
+        padding: 5.5rem var(--space-3) var(--space-6);
+    }
+
     .services-grid {
         grid-template-columns: 1fr;
     }

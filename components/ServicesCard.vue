@@ -1,23 +1,19 @@
 <template>
-  <v-card class="service-card" elevation="6">
-    <v-img
-      :src="image"
-      :alt="title"
-      class="card-image"
-      width="96"
-      height="86"
-    ></v-img>
+  <article class="service-card">
+    <span class="card-icon" aria-hidden="true">
+      <i :class="['mdi', icon]" />
+    </span>
 
     <div class="card-content">
       <h3 class="card-title">{{ title }}</h3>
       <p class="card-description">{{ description }}</p>
     </div>
-  </v-card>
+  </article>
 </template>
 
 <script setup lang="ts">
 defineProps<{
-  image: string;
+  icon: string;
   title: string;
   description: string;
 }>();
@@ -27,63 +23,49 @@ defineProps<{
 .service-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 1rem;
-  border-radius: 16px;
-  background-color: white;
-  transition: all 0.5s ease;
-  cursor: pointer;
-  width: min(100%, 360px);
-  min-height: 320px;
-  margin: 0 auto;
+  align-items: flex-start;
+  text-align: left;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-elev);
+  box-shadow: var(--shadow-sm);
+  height: 100%;
+  /* Colour and shadow only — hovering must not move the card's bounds. */
+  transition: border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
 }
 
 .service-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-  background-color: #BF9264; 
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+  background-color: var(--bg-subtle);
 }
 
-.card-image {
-  margin-bottom: 14px;
-  transition: transform 0.5s ease;
+.card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 1.5rem;
 }
-.service-card:hover .card-image {
-  transform: rotate(12deg);
-}
-
-.card-content {
-  transition: color 0.5s ease;
-  color: #333; /* default text color */
-}
-
 
 .card-title {
-  font-size: 1.25rem;
+  font-size: var(--text-h3);
   font-weight: 600;
-  margin-bottom: 10px;
-  color: #945034; /* default title color */
-  transition: color 0.5s ease;
+  margin-bottom: var(--space-2);
+  color: var(--text);
 }
 
 .card-description {
-  font-size: 1rem;
-  color: inherit; /* inherits from .card-content */
-}
-
-/* Hover states */
-.service-card:hover .card-content {
-  color: white; /* description becomes white */
-}
-
-.service-card:hover .card-title {
-  color: white; /* title becomes white on hover */
-}
-
-@media (max-width: 960px) {
-  .service-card {
-    min-height: 260px;
-  }
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
 }
 </style>
